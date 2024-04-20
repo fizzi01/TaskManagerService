@@ -15,6 +15,19 @@ public class TaskFindService {
     @Autowired
     private MongoTemplate mongoTemplate;
 
+    /**
+     * Finds tasks based on various criteria.
+     *
+     * @param running The running status of the tasks to find.
+     * @param email The email of the user associated with the tasks to find.
+     * @param name The name of the tasks to find.
+     * @param maxComputingPower The maximum computing power of the tasks to find.
+     * @param minComputingPower The minimum computing power of the tasks to find.
+     * @param maxEnergyConsumption The maximum energy consumption of the tasks to find.
+     * @param minEnergyConsumption The minimum energy consumption of the tasks to find.
+     * @param taskDuration The duration of the tasks to find.
+     * @return A list of tasks that match the given criteria.
+     */
     public List<Task> findTasks(Boolean running, String email, String name, Double maxComputingPower, Double minComputingPower, Double maxEnergyConsumption, Double minEnergyConsumption, Double taskDuration) {
         Query query = new Query();
 
