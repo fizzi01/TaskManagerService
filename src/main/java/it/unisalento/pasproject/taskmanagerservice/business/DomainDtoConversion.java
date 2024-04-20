@@ -19,7 +19,6 @@ public class DomainDtoConversion {
      */
     public static TaskDTO getTaskDTO(Task task) {
         TaskDTO taskDTO = new TaskDTO();
-
         taskDTO.setId(task.getId());
         taskDTO.setName(task.getName());
         taskDTO.setEmailUtente(task.getEmailUtente());
