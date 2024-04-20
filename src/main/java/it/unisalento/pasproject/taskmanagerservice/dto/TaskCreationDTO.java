@@ -7,10 +7,6 @@ import lombok.Getter;
 @Getter
 @Setter
 public class TaskCreationDTO {
-    /**
-     * The unique identifier of the task.
-     */
-    private String id;
 
     /**
      * The name of the task.
