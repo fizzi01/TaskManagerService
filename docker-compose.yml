@@ -15,7 +15,7 @@ services:
     networks:
       - taskman-net
     volumes:
-      - ./build/libs/TaskManagerService-v0.0.1.jar:/app/app.jar
+      - ./build/libs/TaskManagerService-v0.0.3.jar:/app/app.jar
     working_dir: /app
     entrypoint: java -Xdebug -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8000 -jar /app/app.jar
 
