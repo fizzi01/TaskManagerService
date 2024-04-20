@@ -7,57 +7,70 @@ import lombok.Getter;
 @Getter
 @Setter
 public class TaskCreationDTO {
+    /**
+     * The unique identifier of the task.
+     */
     private String id;
 
     /**
-     * Task name
+     * The name of the task.
      */
     private String name;
 
+    /**
+     * The email of the user who is creating the task.
+     */
     private String emailUtente;
 
     /**
-     * Task max computing power
+     * The maximum computing power that the task can use.
+     * This is a measure of how much computational resources the task can consume.
      */
     private double maxComputingPower;
 
     /**
-     * Task duration
+     * The expected duration of the task, in seconds.
      */
     private double taskDuration;
 
     /**
-     * Task maximum computing power
+     * The maximum energy consumption of the task.
+     * This is a measure of how much energy the task can consume.
      */
     private double maxEnergyConsumption;
 
     /**
-     * Task minimum computing power
+     * The minimum computing power that the task requires.
+     * This is a measure of the minimum computational resources the task needs to run.
      */
     private double minComputingPower;
 
     /**
-     * Task minimum energy
+     * The minimum energy consumption of the task.
+     * This is a measure of the minimum energy the task needs to run.
      */
     private double minEnergyConsumption;
 
     /**
-     * Task mimimum working time
+     * The minimum working time of the task, in seconds.
+     * This is a measure of the minimum time the task needs to complete its operation.
      */
     private double minWorkingTime;
 
     /**
-     *  Task description
+     * A brief description of the task.
      */
     private String description;
 
     /**
-     * Task script of code associated
+     * The script of code associated with the task.
+     * This should be a link to the script file and should be filled by another service.
      */
-    private String script; // Link to the script file -> Should be filled by another service
+    private String script;
 
     /**
-     * Status of the task
+     * The current status of the task.
+     * If true, the task is currently running. If false, the task is not currently running.
      */
     private Boolean running;
 }

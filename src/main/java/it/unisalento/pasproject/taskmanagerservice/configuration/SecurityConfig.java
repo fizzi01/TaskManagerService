@@ -11,7 +11,16 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
-
+    /**
+     * Configures the security filter chain for the application.
+     * <p>
+     * This method is used to configure the security settings for the application. It sets up the authorization rules,
+     * session management policy, and Cross-Origin Resource Sharing (CORS) and Cross-Site Request Forgery (CSRF) settings.
+     *
+     * @param http The HttpSecurity object to be configured.
+     * @return A SecurityFilterChain object that contains the security settings for the application.
+     * @throws Exception If an error occurs during the configuration process.
+     */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests((auth) -> auth

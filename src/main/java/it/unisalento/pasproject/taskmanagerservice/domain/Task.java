@@ -10,75 +10,107 @@ import java.util.List;
 
 @Getter
 @Setter
-@Document
-/*It represents a Task submitted by a Utente to be filled with Membri that share their computing power*/
+@Document(collection = "task")
 public class Task {
+
     /**
-     * Task id
+     * The unique identifier of the task.
      */
     @Id
     private String id;
 
     /**
-     * Task name
+     * The name of the task.
      */
     private String name;
 
+    /**
+     * The email of the user who created the task.
+     */
     private String emailUtente;
+
+    /**
+     * The id of the user who created the task.
+     */
     private String idUtente;
 
     /**
-     * Task max computing power
+     * The maximum computing power that the task can use.
      */
     @NonNull
     private double maxComputingPower;
 
     /**
-     * Task duration
+     * The expected duration of the task, in seconds.
      */
     @NonNull
     private double taskDuration;
 
     /**
-     * Task maximum computing power
+     * The maximum energy consumption of the task.
      */
     private double maxEnergyConsumption;
 
     /**
-     * Task minimum computing power
+     * The minimum computing power that the task requires.
      */
     private double minComputingPower;
 
     /**
-     * Task minimum energy
+     * The minimum energy consumption of the task.
      */
     private double minEnergyConsumption;
 
     /**
-     * Task mimimum working time
+     * The minimum working time of the task, in seconds.
      */
     private double minWorkingTime;
 
     /**
-     *  Task description
+     * A brief description of the task.
      */
     private String description;
 
     /**
-     * Task script of code associated
+     * The script of code associated with the task.
+     * This should be a link to the script file and should be filled by another service.
      */
-    private String script; // Link to the script file -> Should be filled by another service
-
-    private Boolean running;
-
+    private String script;
 
     /**
-     * TODO
+     * The current status of the task.
+     * If true, the task is currently running. If false, the task is not currently running.
+     */
+    private Boolean running;
+
+    /**
+     * The list of users assigned to the task.
      */
     private List<String> assignedUsers;
 
+    /**
+     * Default constructor for the Task class.
+     */
     public Task() {}
 
+    /**
+     * Constructor for the Task class with all fields.
+     *
+     * @param id The unique identifier of the task.
+     * @param name The name of the task.
+     * @param emailUtente The email of the user who created the task.
+     * @param idUtente The id of the user who created the task.
+     * @param maxComputingPower The maximum computing power that the task can use.
+     * @param taskDuration The expected duration of the task, in seconds.
+     * @param maxEnergyConsumption The maximum energy consumption of the task.
+     * @param minComputingPower The minimum computing power that the task requires.
+     * @param minEnergyConsumption The minimum energy consumption of the task.
+     * @param minWorkingTime The minimum working time of the task, in seconds.
+     * @param description A brief description of the task.
+     * @param script The script of code associated with the task.
+     * @param running The current status of the task.
+     * @param assignedUsers The list of users assigned to the task.
+     */
     public Task(String id, String name, String emailUtente, String idUtente, double maxComputingPower, double taskDuration, double maxEnergyConsumption, double minComputingPower, double minEnergyConsumption, double minWorkingTime, String description, String script, Boolean running, List<String> assignedUsers) {
         this.id = id;
         this.name = name;

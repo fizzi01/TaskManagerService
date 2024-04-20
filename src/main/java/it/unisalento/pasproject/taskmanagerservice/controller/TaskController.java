@@ -27,17 +27,18 @@ public class TaskController {
     private TaskFindService taskFindService;
 
     /**
+     * This method is used to find tasks based on various filters.
      *
-     * @param email
-     * @param running
-     * @param name
-     * @param maxComputingPower
-     * @param minComputingPower
-     * @param maxEnergyConsumption
-     * @param minEnergy
-     * @param taskDuration
-     * @return
-     * @throws TaskNotFoundException
+     * @param email The email of the user associated with the tasks.
+     * @param running The running status of the tasks. If true, only tasks that are currently running will be returned. If false, only tasks that are not currently running will be returned. If null, tasks will not be filtered by running status.
+     * @param name The name of the tasks. If provided, only tasks with this name will be returned.
+     * @param maxComputingPower The maximum computing power of the tasks. If provided, only tasks with a computing power less than or equal to this value will be returned.
+     * @param minComputingPower The minimum computing power of the tasks. If provided, only tasks with a computing power greater than or equal to this value will be returned.
+     * @param maxEnergyConsumption The maximum energy consumption of the tasks. If provided, only tasks with an energy consumption less than or equal to this value will be returned.
+     * @param minEnergy The minimum energy consumption of the tasks. If provided, only tasks with an energy consumption greater than or equal to this value will be returned.
+     * @param taskDuration The duration of the tasks. If provided, only tasks with a duration equal to this value will be returned.
+     * @return A TaskListDTO object containing a list of TaskDTO objects that match the provided filters.
+     * @throws TaskNotFoundException If no tasks are found that match the provided filters.
      */
     @GetMapping(value="/find")
     public TaskListDTO getByFilters(@RequestParam() String email,
@@ -79,10 +80,11 @@ public class TaskController {
     }
 
     /**
+     * This method is used to find tasks based on various filters.
      *
-     * @param taskToFind
-     * @return
-     * @throws TaskNotFoundException
+     * @param taskToFind A TaskFindingDTO object containing the filters to be used in the search.
+     * @return A TaskListDTO object containing a list of TaskDTO objects that match the provided filters.
+     * @throws TaskNotFoundException If no tasks are found that match the provided filters.
      */
     @PostMapping(value="/find", consumes = MediaType.APPLICATION_JSON_VALUE)
     public TaskListDTO getByFilters(@RequestBody TaskFindingDTO taskToFind) throws TaskNotFoundException{
@@ -115,6 +117,13 @@ public class TaskController {
         return taskList;
     }
 
+    /**
+     * This method is used to create a new task.
+     *
+     * @param newTask A TaskCreationDTO object containing the details of the task to be created.
+     * @return A TaskDTO object containing the details of the created task.
+     * @throws TaskNotFoundException If the task could not be created.
+     */
     @PostMapping(value="/create", consumes = MediaType.APPLICATION_JSON_VALUE)
     public TaskDTO createTask(@RequestBody TaskCreationDTO newTask) throws TaskNotFoundException{
 
