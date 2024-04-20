@@ -96,7 +96,9 @@ jobs:
           git config user.name github-actions
           git config user.email github-actions@github.com
           git add build.gradle
-          git add docker-compose.yml
+          if [ -f docker-compose.yml ]; then
+            git add docker-compose.yml
+          fi
           git commit -m "Update build.gradle & docker-compose to ${{ env.NEW_TAG }}"
           git push
 
