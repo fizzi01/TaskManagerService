@@ -24,7 +24,8 @@ public class Task {
      */
     private String name;
 
-    private Utente utente;
+    private String emailUtente;
+    private String idUtente;
 
     /**
      * Task max computing power
@@ -51,7 +52,7 @@ public class Task {
     /**
      * Task minimum energy
      */
-    private double minEnergy;
+    private double minEnergyConsumption;
 
     /**
      * Task mimimum working time
@@ -70,6 +71,7 @@ public class Task {
 
     private Boolean running;
 
+
     /**
      * TODO
      */
@@ -77,12 +79,20 @@ public class Task {
 
     public Task() {}
 
-    public Task(String id, String name, String description, String script, List<String> assignedUsers) {
+    public Task(String id, String name, String emailUtente, String idUtente, double maxComputingPower, double taskDuration, double maxEnergyConsumption, double minComputingPower, double minEnergyConsumption, double minWorkingTime, String description, String script, Boolean running, List<String> assignedUsers) {
         this.id = id;
         this.name = name;
+        this.emailUtente = emailUtente;
+        this.idUtente = idUtente;
+        this.maxComputingPower = maxComputingPower;
+        this.taskDuration = taskDuration;
+        this.maxEnergyConsumption = maxEnergyConsumption;
+        this.minComputingPower = minComputingPower;
+        this.minEnergyConsumption = minEnergyConsumption;
+        this.minWorkingTime = minWorkingTime;
         this.description = description;
         this.script = script;
+        this.running = running;
         this.assignedUsers = assignedUsers;
     }
-
 }

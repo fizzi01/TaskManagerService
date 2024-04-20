@@ -1,13 +1,12 @@
 package it.unisalento.pasproject.taskmanagerservice.dto;
 
-import lombok.Getter;
 import lombok.Setter;
+import lombok.Getter;
 
-import java.util.List;
 
 @Getter
 @Setter
-public class TaskDTO {
+public class TaskCreationDTO {
     private String id;
 
     /**
@@ -61,9 +60,4 @@ public class TaskDTO {
      * Status of the task
      */
     private Boolean running;
-
-    /**
-     * TODO
-     */
-    private List<String> assignedUsers;
 }

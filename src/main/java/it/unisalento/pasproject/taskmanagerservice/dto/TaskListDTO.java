@@ -1,12 +1,15 @@
 package it.unisalento.pasproject.taskmanagerservice.dto;
 
-import it.unisalento.pasproject.taskmanagerservice.domain.Task;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
+@Setter
 public class TaskListDTO {
-    private List<Task> tasks;
+    private List<TaskDTO> tasks;
 
     public TaskListDTO() {
         this.tasks = new ArrayList<>();

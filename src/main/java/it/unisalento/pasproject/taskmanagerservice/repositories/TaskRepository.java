@@ -2,6 +2,7 @@ package it.unisalento.pasproject.taskmanagerservice.repositories;
 
 import it.unisalento.pasproject.taskmanagerservice.domain.Task;
 import it.unisalento.pasproject.taskmanagerservice.domain.Utente;
+import it.unisalento.pasproject.taskmanagerservice.dto.TaskListDTO;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.List;
@@ -14,20 +15,22 @@ public interface TaskRepository extends MongoRepository<Task, String> {
      */
     List<Task> findByRunning(Boolean running);
 
+    List<Task> findByRunningAndEmailUtente(Boolean running, String email);
+
     /**
      *
-     * @param creator
+     * @param email
      * @return
      */
-    List<Task> findByUtente(Utente creator);
+    List<Task> findByEmailUtente(String email);
 
     /**
      *
      * @param name
-     * @param creator
+     * @param email
      * @return
      */
-    Task findByNameAndUtente(String name, Utente creator);
+    Task findByNameAndEmailUtente(String name, String email);
 
     /**
      *
@@ -98,5 +101,4 @@ public interface TaskRepository extends MongoRepository<Task, String> {
      * @return
      */
     List<Task> findByMinEnergyLessThanEqual(double minEnergy);
-
 }
