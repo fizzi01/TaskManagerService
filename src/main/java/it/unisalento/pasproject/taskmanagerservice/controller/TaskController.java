@@ -35,7 +35,7 @@ public class TaskController {
      * @param maxComputingPower The maximum computing power of the tasks. If provided, only tasks with a computing power less than or equal to this value will be returned.
      * @param minComputingPower The minimum computing power of the tasks. If provided, only tasks with a computing power greater than or equal to this value will be returned.
      * @param maxEnergyConsumption The maximum energy consumption of the tasks. If provided, only tasks with an energy consumption less than or equal to this value will be returned.
-     * @param minEnergy The minimum energy consumption of the tasks. If provided, only tasks with an energy consumption greater than or equal to this value will be returned.
+     * @param minEnergyConsumption The minimum energy consumption of the tasks. If provided, only tasks with an energy consumption greater than or equal to this value will be returned.
      * @param taskDuration The duration of the tasks. If provided, only tasks with a duration equal to this value will be returned.
      * @return A TaskListDTO object containing a list of TaskDTO objects that match the provided filters.
      * @throws TaskNotFoundException If no tasks are found that match the provided filters.
@@ -47,7 +47,7 @@ public class TaskController {
                                     @RequestParam(required = false) Double maxComputingPower,
                                     @RequestParam(required = false) Double minComputingPower,
                                     @RequestParam(required = false) Double maxEnergyConsumption,
-                                    @RequestParam(required = false) Double minEnergy,
+                                    @RequestParam(required = false) Double minEnergyConsumption,
                                     @RequestParam(required = false) Double taskDuration) throws TaskNotFoundException{
 
         TaskListDTO taskList = new TaskListDTO();
@@ -61,7 +61,7 @@ public class TaskController {
                 maxComputingPower,
                 minComputingPower,
                 maxEnergyConsumption,
-                minEnergy,
+                minEnergyConsumption,
                 taskDuration
         );
 
