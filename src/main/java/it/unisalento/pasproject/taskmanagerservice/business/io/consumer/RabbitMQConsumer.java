@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 /**
  * RabbitMQConsumer class for consuming messages from RabbitMQ.
  */
-@Service
+@Service("RabbitMQConsumer")
 public class RabbitMQConsumer implements MessageConsumerStrategy{
     /**
      * The name of the RabbitMQ exchange to send messages to.

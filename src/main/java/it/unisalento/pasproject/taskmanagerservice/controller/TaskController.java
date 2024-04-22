@@ -27,11 +27,13 @@ public class TaskController {
     /**
      * Producer instance for sending simple messages.
      */
+
     @Autowired
     private MessageProducer messageProducer;
 
-    @Autowired
-    private RabbitMQProducer rabbitMQProducer;
+//    @Autowired
+//    @Qualifier("RabbitMQProducer")
+//    private MessageProducerStrategy rabbitMQProducer;
 
     /**
      * TaskRepository instance for accessing the task data.
@@ -41,11 +43,6 @@ public class TaskController {
 
     @Autowired
     private TaskService taskService;
-
-    @Autowired
-    public TaskController(RabbitMQProducer rabbitMQProducer){
-        this.messageProducer.setStrategy(rabbitMQProducer);
-    }
 
     /**
      * Endpoint for sending a simple message to RabbitMQ.

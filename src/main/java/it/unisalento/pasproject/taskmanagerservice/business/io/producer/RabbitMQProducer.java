@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-@Service
+@Service("RabbitMQProducer")
 public class RabbitMQProducer implements MessageProducerStrategy {
     /**
      * The name of the RabbitMQ exchange to send messages to.

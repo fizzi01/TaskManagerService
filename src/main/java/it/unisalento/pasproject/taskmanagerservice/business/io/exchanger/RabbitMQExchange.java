@@ -9,7 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-@Service
+@Service("RabbitMQExchange")
 public class RabbitMQExchange implements MessageExchangeStrategy{
 
 

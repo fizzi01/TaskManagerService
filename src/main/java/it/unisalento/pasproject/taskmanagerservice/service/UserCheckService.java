@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 public class UserCheckService {
 
     @Value("${service.role.name}")
-    public static String ROLE;
+    public String ROLE;
 
     public UserDetailsDTO loadUserByUsername(String email) throws UsernameNotFoundException {
 
