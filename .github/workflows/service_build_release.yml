@@ -63,6 +63,17 @@ jobs:
           major=$(echo "$latest_tag" | cut -d '.' -f1)
           minor=$(echo "$latest_tag" | cut -d '.' -f2)
           patch=$(echo "$latest_tag" | cut -d '.' -f3)
+          if (( patch == 10 )); then
+              patch=0
+              if (( minor == 10 )); then
+                minor=0
+                major=$((major + 1))
+              else
+                minor=$((minor + 1))
+              fi
+          else
+              patch=$((patch + 1))
+          fi
           new_version="$major.$minor.$((patch + 1))"
           echo "NEW_TAG=$new_version" >> $GITHUB_ENV
           echo "NEW_TAG=$new_version" >> $GITHUB_OUTPUT
