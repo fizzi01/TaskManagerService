@@ -2,6 +2,7 @@ package it.unisalento.pasproject.taskmanagerservice.controller;
 
 import it.unisalento.pasproject.taskmanagerservice.business.io.producer.MessageProducer;
 import it.unisalento.pasproject.taskmanagerservice.business.io.producer.MessageProducerStrategy;
+import it.unisalento.pasproject.taskmanagerservice.business.io.producer.RabbitMQProducer;
 import it.unisalento.pasproject.taskmanagerservice.domain.Task;
 import it.unisalento.pasproject.taskmanagerservice.dto.TaskCreationDTO;
 import it.unisalento.pasproject.taskmanagerservice.dto.TaskDTO;
@@ -29,6 +30,9 @@ public class TaskController {
     @Autowired
     private MessageProducer messageProducer;
 
+    @Autowired
+    private RabbitMQProducer rabbitMQProducer;
+
     /**
      * TaskRepository instance for accessing the task data.
      */
@@ -39,10 +43,9 @@ public class TaskController {
     private TaskService taskService;
 
     @Autowired
-    public TaskController(@Qualifier("rabbitMQProducer") MessageProducerStrategy strategy) {
-        this.messageProducer.setStrategy(strategy);
+    public TaskController(RabbitMQProducer rabbitMQProducer){
+        this.messageProducer.setStrategy(rabbitMQProducer);
     }
-
 
     /**
      * Endpoint for sending a simple message to RabbitMQ.
