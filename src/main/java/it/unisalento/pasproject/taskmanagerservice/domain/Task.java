@@ -84,6 +84,12 @@ public class Task {
     private Boolean running;
 
     /**
+     * The enabled status of the task.
+     * If true, the task is enabled. If false, the task is disabled.
+     */
+    private Boolean enabled;
+
+    /**
      * The list of users assigned to the task.
      */
     private List<String> assignedUsers;
