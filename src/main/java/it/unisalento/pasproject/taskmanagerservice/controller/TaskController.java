@@ -25,11 +25,13 @@ public class TaskController {
     /**
      * RabbitMQProducer instance for sending simple messages.
      */
+    @Autowired
     private RabbitMQProducer rabbitMQProducer;
 
     /**
      * RabbitMQJsonProducer instance for sending JSON messages.
      */
+    @Autowired
     private RabbitMQJsonProducer rabbitMQJsonProducer;
 
     /**
