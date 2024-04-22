@@ -76,7 +76,7 @@ jobs:
           else
               patch=$((patch + 1))
           fi
-          new_version="$major.$minor.$((patch + 1))"
+          new_version="$major.$minor.$patch"
           echo "NEW_TAG=$new_version" >> $GITHUB_ENV
           echo "NEW_TAG=$new_version" >> $GITHUB_OUTPUT
       
