@@ -12,6 +12,7 @@ on:
       
 jobs:
   build:
+    name: Build Service Jar
     runs-on: ubuntu-latest
 
     steps:
@@ -39,6 +40,7 @@ jobs:
         
 
   prepare_release:
+    name: Prepare release
     needs: build
     runs-on: ubuntu-latest
     permissions: write-all
@@ -114,6 +116,7 @@ jobs:
           git push
 
   release:
+    name: Release Service
     needs: prepare_release
     permissions: write-all
     runs-on: ubuntu-latest
