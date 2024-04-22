@@ -1,14 +1,18 @@
-package it.unisalento.pasproject.taskmanagerservice.service;
+package it.unisalento.pasproject.taskmanagerservice.business.io.consumer;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+/**
+ * RabbitMQConsumer class for consuming messages from RabbitMQ.
+ */
 @Service
-public class RabbitMQProducer {
+public class RabbitMQConsumer implements MessageConsumerStrategy{
     /**
      * The name of the RabbitMQ exchange to send messages to.
      */
@@ -24,30 +28,22 @@ public class RabbitMQProducer {
     /**
      * Logger instance for logging events.
      */
-    private static final Logger LOGGER = LoggerFactory.getLogger(RabbitMQProducer.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(RabbitMQConsumer.class);
 
     /**
      * RabbitTemplate instance for sending messages to RabbitMQ.
      */
-    @Autowired
-    private RabbitTemplate rabbitTemplate;
+    private final RabbitTemplate rabbitTemplate;
 
-    /**
-     * Constructor for the RabbitMQProducer.
-     *
-     * @param rabbitTemplate The RabbitTemplate instance to use for sending messages.
-     */
-    public RabbitMQProducer(RabbitTemplate rabbitTemplate) {
+    @Autowired
+    public RabbitMQConsumer(RabbitTemplate rabbitTemplate) {
         this.rabbitTemplate = rabbitTemplate;
     }
 
-    /**
-     * Method to send a message to RabbitMQ.
-     *
-     * @param message The message to send.
-     */
-    public void sendMessage(String message) {
-        LOGGER.info(String.format("RabbitMQ message sent: %s", message));
-        rabbitTemplate.convertAndSend(exchange, routingKey, message);
+    @Override
+    @RabbitListener(queues = "${rabbitmq.queue.json.name}")
+    public <T> T consumeMessage(T message) {
+        LOGGER.info(String.format("RabbitMQ message received: %s", message.toString()));
+        return message;
     }
 }

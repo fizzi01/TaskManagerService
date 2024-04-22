@@ -1,6 +1,5 @@
-package it.unisalento.pasproject.taskmanagerservice.service;
+package it.unisalento.pasproject.taskmanagerservice.business.io.producer;
 
-import it.unisalento.pasproject.taskmanagerservice.dto.TaskDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -9,7 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
-public class RabbitMQJsonProducer {
+public class RabbitMQProducer implements MessageProducerStrategy{
     /**
      * The name of the RabbitMQ exchange to send messages to.
      */
@@ -30,25 +29,35 @@ public class RabbitMQJsonProducer {
     /**
      * RabbitTemplate instance for sending messages to RabbitMQ.
      */
-    @Autowired
-    private RabbitTemplate rabbitTemplate;
+
+    private final RabbitTemplate rabbitTemplate;
 
     /**
      * Constructor for the RabbitMQJsonProducer.
      *
      * @param rabbitTemplate The RabbitTemplate instance to use for sending messages.
      */
-    public RabbitMQJsonProducer(RabbitTemplate rabbitTemplate) {
+    @Autowired
+    public RabbitMQProducer(RabbitTemplate rabbitTemplate) {
         this.rabbitTemplate = rabbitTemplate;
     }
 
     /**
      * Method to send a JSON message to RabbitMQ.
      *
-     * @param taskDTO The TaskDTO to send as a JSON message.
+     * @param message The TaskDTO to send as a JSON message.
      */
-    public void sendJsonMessage(TaskDTO taskDTO) {
-        LOGGER.info(String.format("RabbitMQ message sent: %s", taskDTO.toString()));
-        rabbitTemplate.convertAndSend(exchange, routingKey, taskDTO);
+    @Override
+    public <T> void sendMessage(T message, String routingKey) {
+        LOGGER.info(String.format("RabbitMQ message sent: %s", message.toString()));
+        rabbitTemplate.convertAndSend(exchange, routingKey, message);
     }
+
+    @Override
+    public <T> void sendMessage(T messageDTO) {
+        LOGGER.info(String.format("RabbitMQ message sent: %s", messageDTO.toString()));
+        rabbitTemplate.convertAndSend(exchange, routingKey, messageDTO);
+    }
+
+
 }

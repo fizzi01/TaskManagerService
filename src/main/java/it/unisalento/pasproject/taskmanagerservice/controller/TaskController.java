@@ -1,5 +1,7 @@
 package it.unisalento.pasproject.taskmanagerservice.controller;
 
+import it.unisalento.pasproject.taskmanagerservice.business.io.producer.MessageProducer;
+import it.unisalento.pasproject.taskmanagerservice.business.io.producer.MessageProducerStrategy;
 import it.unisalento.pasproject.taskmanagerservice.domain.Task;
 import it.unisalento.pasproject.taskmanagerservice.dto.TaskCreationDTO;
 import it.unisalento.pasproject.taskmanagerservice.dto.TaskDTO;
@@ -7,10 +9,9 @@ import it.unisalento.pasproject.taskmanagerservice.dto.TaskFindingDTO;
 import it.unisalento.pasproject.taskmanagerservice.dto.TaskListDTO;
 import it.unisalento.pasproject.taskmanagerservice.exceptions.TaskNotFoundException;
 import it.unisalento.pasproject.taskmanagerservice.repositories.TaskRepository;
-import it.unisalento.pasproject.taskmanagerservice.service.RabbitMQJsonProducer;
-import it.unisalento.pasproject.taskmanagerservice.service.RabbitMQProducer;
 import it.unisalento.pasproject.taskmanagerservice.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,16 +24,10 @@ import java.util.Optional;
 @RequestMapping("/api/tasks")
 public class TaskController {
     /**
-     * RabbitMQProducer instance for sending simple messages.
+     * Producer instance for sending simple messages.
      */
     @Autowired
-    private RabbitMQProducer rabbitMQProducer;
-
-    /**
-     * RabbitMQJsonProducer instance for sending JSON messages.
-     */
-    @Autowired
-    private RabbitMQJsonProducer rabbitMQJsonProducer;
+    private MessageProducer messageProducer;
 
     /**
      * TaskRepository instance for accessing the task data.
@@ -43,16 +38,11 @@ public class TaskController {
     @Autowired
     private TaskService taskService;
 
-    /**
-     * Constructor for the TaskController.
-     *
-     * @param rabbitMQProducer The RabbitMQProducer instance to use for sending simple messages.
-     * @param rabbitMQJsonProducer The RabbitMQJsonProducer instance to use for sending JSON messages.
-     */
-    public TaskController(RabbitMQProducer rabbitMQProducer, RabbitMQJsonProducer rabbitMQJsonProducer) {
-        this.rabbitMQProducer = rabbitMQProducer;
-        this.rabbitMQJsonProducer = rabbitMQJsonProducer;
+    @Autowired
+    public TaskController(@Qualifier("rabbitMQProducer") MessageProducerStrategy strategy) {
+        this.messageProducer.setStrategy(strategy);
     }
+
 
     /**
      * Endpoint for sending a simple message to RabbitMQ.
@@ -62,7 +52,7 @@ public class TaskController {
      */
     @GetMapping(value="/test")
     public ResponseEntity<String> sendMessage(@RequestParam("message") String message) {
-        rabbitMQProducer.sendMessage(message);
+        messageProducer.sendMessage(message);
         return ResponseEntity.ok("Message sent");
     }
 
@@ -74,7 +64,7 @@ public class TaskController {
      */
     @PostMapping(value="/test")
     public ResponseEntity<String> sendMessage(@RequestBody TaskDTO taskDTO) {
-        rabbitMQJsonProducer.sendJsonMessage(taskDTO);
+        messageProducer.sendMessage(taskDTO);
         return ResponseEntity.ok("Json message sent");
     }
 
