@@ -10,6 +10,7 @@ import it.unisalento.pasproject.taskmanagerservice.repositories.TaskRepository;
 import it.unisalento.pasproject.taskmanagerservice.service.RabbitMQJsonProducer;
 import it.unisalento.pasproject.taskmanagerservice.service.RabbitMQProducer;
 import it.unisalento.pasproject.taskmanagerservice.service.TaskFindService;
+import it.unisalento.pasproject.taskmanagerservice.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static it.unisalento.pasproject.taskmanagerservice.business.DomainDtoConversion.getTaskDTO;
 
@@ -39,11 +41,8 @@ public class TaskController {
     @Autowired
     TaskRepository taskRepository;
 
-    /**
-     * TaskFindService instance for finding tasks based on various criteria.
-     */
     @Autowired
-    private TaskFindService taskFindService;
+    private TaskService taskService;
 
     /**
      * Constructor for the TaskController.
@@ -97,6 +96,7 @@ public class TaskController {
     @GetMapping(value="/find")
     public TaskListDTO getByFilters(@RequestParam() String email,
                                     @RequestParam(required = false) Boolean running,
+                                    @RequestParam(required = false) Boolean enabled,
                                     @RequestParam(required = false) String name,
                                     @RequestParam(required = false) Double maxComputingPower,
                                     @RequestParam(required = false) Double minComputingPower,
@@ -108,8 +108,9 @@ public class TaskController {
         List<TaskDTO> list = new ArrayList<>();
         taskList.setTasks(list);
 
-        List<Task> tasks = taskFindService.findTasks(
+        List<Task> tasks = taskService.findTasks(
                 running,
+                enabled,
                 email,
                 name,
                 maxComputingPower,
@@ -125,7 +126,7 @@ public class TaskController {
         }
 
         for (Task task : tasks){
-            TaskDTO taskDTO = getTaskDTO(task);
+            TaskDTO taskDTO = taskService.getTaskDTO(task);
 
             list.add(taskDTO);
         }
@@ -146,8 +147,9 @@ public class TaskController {
         List<TaskDTO> list = new ArrayList<>();
         taskList.setTasks(list);
 
-        List<Task> tasks = taskFindService.findTasks(
+        List<Task> tasks = taskService.findTasks(
                 taskToFind.getRunning(),
+                taskToFind.getEnabled(),
                 taskToFind.getEmailUtente(),
                 taskToFind.getName(),
                 taskToFind.getMaxComputingPower(),
@@ -163,7 +165,7 @@ public class TaskController {
         }
 
         for (Task task : tasks){
-            TaskDTO taskDTO = getTaskDTO(task);
+            TaskDTO taskDTO = taskService.getTaskDTO(task);
 
             list.add(taskDTO);
         }
@@ -192,13 +194,115 @@ public class TaskController {
         task.setMinWorkingTime(newTask.getMinWorkingTime());
         task.setDescription(newTask.getDescription());
         task.setTaskDuration(newTask.getTaskDuration());
+        task.setEnabled(false); //Initially disabled, waiting for script upload
         task.setScript(null);
         task.setRunning(newTask.getRunning());
         task.setAssignedUsers(null);
 
         task = taskRepository.save(task);
 
-        return getTaskDTO(task);
+        return taskService.getTaskDTO(task);
+    }
+
+    /**
+     * This method is used to update a task.
+     *
+     * @param taskToUpdate A TaskDTO object containing the details of the task to be updated.
+     * @return A TaskDTO object containing the details of the updated task.
+     * @throws TaskNotFoundException If the task could not be updated.
+     */
+    @PutMapping(value="/update", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public TaskDTO updateTask(@RequestBody TaskDTO taskToUpdate) throws TaskNotFoundException{
+
+        Optional<Task> task = taskRepository.findById(taskToUpdate.getId());
+
+        if(task.isEmpty()) {
+            throw new TaskNotFoundException();
+        }
+
+        Task retTask = task.get();
+
+        // Utilizza Optional per verificare se un valore è presente o meno
+        Optional.of(taskToUpdate.getName()).ifPresent(retTask::setName);
+        Optional.of(taskToUpdate.getEmailUtente()).ifPresent(retTask::setEmailUtente);
+        Optional.ofNullable(taskToUpdate.getMaxComputingPower()).ifPresent(retTask::setMaxComputingPower);
+        Optional.ofNullable(taskToUpdate.getTaskDuration()).ifPresent(retTask::setTaskDuration);
+        Optional.ofNullable(taskToUpdate.getMaxEnergyConsumption()).ifPresent(retTask::setMaxEnergyConsumption);
+        Optional.ofNullable(taskToUpdate.getMinComputingPower()).ifPresent(retTask::setMinComputingPower);
+        Optional.ofNullable(taskToUpdate.getMinEnergyConsumption()).ifPresent(retTask::setMinEnergyConsumption);
+        Optional.ofNullable(taskToUpdate.getMinWorkingTime()).ifPresent(retTask::setMinWorkingTime);
+        Optional.ofNullable(taskToUpdate.getDescription()).ifPresent(retTask::setDescription);
+        Optional.ofNullable(taskToUpdate.getScript()).ifPresent(retTask::setScript);
+        Optional.ofNullable(taskToUpdate.getRunning()).ifPresent(retTask::setRunning);
+        Optional.ofNullable(taskToUpdate.getAssignedUsers()).ifPresent(retTask::setAssignedUsers);
+
+        retTask = taskRepository.save(retTask);
+
+        return taskService.getTaskDTO(retTask);
+    }
+
+    @PutMapping(value="/enable/{id}")
+    public TaskDTO enableTask(@PathVariable String id) throws TaskNotFoundException{
+
+        Optional<Task> task = taskRepository.findById(id);
+
+        if(task.isEmpty()) {
+            throw new TaskNotFoundException();
+        }
+
+        Task retTask = task.get();
+        retTask.setEnabled(true);
+        retTask = taskRepository.save(retTask);
+
+        return taskService.getTaskDTO(retTask);
+    }
+
+    @PutMapping(value="/disable/{id}")
+    public TaskDTO disableTask(@PathVariable String id) throws TaskNotFoundException{
+
+        Optional<Task> task = taskRepository.findById(id);
+
+        if(task.isEmpty()) {
+            throw new TaskNotFoundException();
+        }
+
+        Task retTask = task.get();
+        retTask.setEnabled(false);
+        retTask = taskRepository.save(retTask);
+
+        return taskService.getTaskDTO(retTask);
+    }
+
+    @PutMapping(value="/run/{id}")
+    public TaskDTO runTask(@PathVariable String id) throws TaskNotFoundException{
+
+        Optional<Task> task = taskRepository.findById(id);
+
+        if(task.isEmpty()) {
+            throw new TaskNotFoundException();
+        }
+
+        Task retTask = task.get();
+        retTask.setRunning(true);
+        retTask = taskRepository.save(retTask);
+
+        return taskService.getTaskDTO(retTask);
+    }
+
+    @PutMapping(value="/stop/{id}")
+    public TaskDTO stopTask(@PathVariable String id) throws TaskNotFoundException{
+
+        Optional<Task> task = taskRepository.findById(id);
+
+        if(task.isEmpty()) {
+            throw new TaskNotFoundException();
+        }
+
+        Task retTask = task.get();
+        retTask.setRunning(false);
+        retTask = taskRepository.save(retTask);
+
+        return taskService.getTaskDTO(retTask);
     }
 
 }

@@ -24,6 +24,15 @@ public interface TaskRepository extends MongoRepository<Task, String> {
     List<Task> findByRunningAndEmailUtente(Boolean running, String email);
 
     /**
+     * Finds tasks by their running status and the email of the user they are associated with.
+     *
+     * @param enabled The enabled status of the tasks to find.
+     * @param email The email of the user the tasks are associated with.
+     * @return A list of tasks with the given enabled status and user email.
+     */
+    List<Task> findByRunningAndEmailUtenteAndEnabled(Boolean enabled, String email, Boolean running);
+
+    /**
      * Finds tasks by the email of the user they are associated with.
      *
      * @param email The email of the user the tasks are associated with.

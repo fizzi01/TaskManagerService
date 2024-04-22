@@ -56,4 +56,9 @@ public class TaskFindingDTO {
      * If true, the task is currently running. If false, the task is not currently running.
      */
     private Boolean running;
+
+    /**
+     * The enabled status of the task.
+     */
+    private Boolean enabled;
 }

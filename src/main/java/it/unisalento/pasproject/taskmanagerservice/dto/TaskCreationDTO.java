@@ -69,4 +69,10 @@ public class TaskCreationDTO {
      * If true, the task is currently running. If false, the task is not currently running.
      */
     private Boolean running;
+
+    /**
+     * The enabled status of the task.
+     * If true, the task is enabled. If false, the task is disabled.
+     */
+    private Boolean enabled;
 }

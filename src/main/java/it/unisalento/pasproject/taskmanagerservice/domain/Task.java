@@ -19,7 +19,7 @@ public class Task {
     @Id
     private String id;
 
-    /**
+    /**c
      * The name of the task.
      */
     private String name;
@@ -117,7 +117,7 @@ public class Task {
      * @param running The current status of the task.
      * @param assignedUsers The list of users assigned to the task.
      */
-    public Task(String id, String name, String emailUtente, String idUtente, double maxComputingPower, double taskDuration, double maxEnergyConsumption, double minComputingPower, double minEnergyConsumption, double minWorkingTime, String description, String script, Boolean running, List<String> assignedUsers) {
+    public Task(String id, String name, String emailUtente, String idUtente, double maxComputingPower, double taskDuration, double maxEnergyConsumption, double minComputingPower, double minEnergyConsumption, double minWorkingTime, String description, String script, Boolean running,Boolean enabled, List<String> assignedUsers) {
         this.id = id;
         this.name = name;
         this.emailUtente = emailUtente;
@@ -131,6 +131,7 @@ public class Task {
         this.description = description;
         this.script = script;
         this.running = running;
+        this.enabled = enabled;
         this.assignedUsers = assignedUsers;
     }
 }
