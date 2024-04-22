@@ -7,9 +7,12 @@ import it.unisalento.pasproject.taskmanagerservice.dto.TaskFindingDTO;
 import it.unisalento.pasproject.taskmanagerservice.dto.TaskListDTO;
 import it.unisalento.pasproject.taskmanagerservice.exceptions.TaskNotFoundException;
 import it.unisalento.pasproject.taskmanagerservice.repositories.TaskRepository;
+import it.unisalento.pasproject.taskmanagerservice.service.RabbitMQJsonProducer;
+import it.unisalento.pasproject.taskmanagerservice.service.RabbitMQProducer;
 import it.unisalento.pasproject.taskmanagerservice.service.TaskFindService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -20,11 +23,62 @@ import static it.unisalento.pasproject.taskmanagerservice.business.DomainDtoConv
 @RestController
 @RequestMapping("/api/tasks")
 public class TaskController {
+    /**
+     * RabbitMQProducer instance for sending simple messages.
+     */
+    private RabbitMQProducer rabbitMQProducer;
+
+    /**
+     * RabbitMQJsonProducer instance for sending JSON messages.
+     */
+    private RabbitMQJsonProducer rabbitMQJsonProducer;
+
+    /**
+     * TaskRepository instance for accessing the task data.
+     */
     @Autowired
     TaskRepository taskRepository;
 
+    /**
+     * TaskFindService instance for finding tasks based on various criteria.
+     */
     @Autowired
     private TaskFindService taskFindService;
+
+    /**
+     * Constructor for the TaskController.
+     *
+     * @param rabbitMQProducer The RabbitMQProducer instance to use for sending simple messages.
+     * @param rabbitMQJsonProducer The RabbitMQJsonProducer instance to use for sending JSON messages.
+     */
+    public TaskController(RabbitMQProducer rabbitMQProducer, RabbitMQJsonProducer rabbitMQJsonProducer) {
+        this.rabbitMQProducer = rabbitMQProducer;
+        this.rabbitMQJsonProducer = rabbitMQJsonProducer;
+    }
+
+    /**
+     * Endpoint for sending a simple message to RabbitMQ.
+     *
+     * @param message The message to send.
+     * @return A ResponseEntity indicating that the message was sent.
+     */
+    @GetMapping(value="/test")
+    public ResponseEntity<String> sendMessage(@RequestParam("message") String message) {
+        rabbitMQProducer.sendMessage(message);
+        return ResponseEntity.ok("Message sent");
+    }
+
+    /**
+     * Endpoint for sending a JSON message to RabbitMQ.
+     *
+     * @param taskDTO The TaskDTO to send as a JSON message.
+     * @return A ResponseEntity indicating that the JSON message was sent.
+     */
+    @PostMapping(value="/test")
+    public ResponseEntity<String> sendMessage(@RequestBody TaskDTO taskDTO) {
+        rabbitMQJsonProducer.sendJsonMessage(taskDTO);
+        return ResponseEntity.ok("Json message sent");
+    }
 
     /**
      * This method is used to find tasks based on various filters.
