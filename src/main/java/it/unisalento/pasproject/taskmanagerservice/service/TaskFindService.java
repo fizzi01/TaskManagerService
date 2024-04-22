@@ -42,13 +42,13 @@ public class TaskFindService {
             query.addCriteria(Criteria.where("name").is(name));
         }
         if (maxComputingPower != null) {
-            query.addCriteria(Criteria.where("maxComputingPower").gte(maxComputingPower));
+            query.addCriteria(Criteria.where("maxComputingPower").lte(maxComputingPower));
         }
         if (minComputingPower != null) {
             query.addCriteria(Criteria.where("minComputingPower").gte(minComputingPower));
         }
         if (maxEnergyConsumption != null) {
-            query.addCriteria(Criteria.where("maxEnergyConsumption").gte(maxEnergyConsumption));
+            query.addCriteria(Criteria.where("maxEnergyConsumption").lte(maxEnergyConsumption));
         }
         if (minEnergyConsumption != null) {
             query.addCriteria(Criteria.where("minEnergyConsumption").gte(minEnergyConsumption));
