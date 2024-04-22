@@ -9,7 +9,6 @@ import it.unisalento.pasproject.taskmanagerservice.exceptions.TaskNotFoundExcept
 import it.unisalento.pasproject.taskmanagerservice.repositories.TaskRepository;
 import it.unisalento.pasproject.taskmanagerservice.service.RabbitMQJsonProducer;
 import it.unisalento.pasproject.taskmanagerservice.service.RabbitMQProducer;
-import it.unisalento.pasproject.taskmanagerservice.service.TaskFindService;
 import it.unisalento.pasproject.taskmanagerservice.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -19,8 +18,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-import static it.unisalento.pasproject.taskmanagerservice.business.DomainDtoConversion.getTaskDTO;
 
 @RestController
 @RequestMapping("/api/tasks")
