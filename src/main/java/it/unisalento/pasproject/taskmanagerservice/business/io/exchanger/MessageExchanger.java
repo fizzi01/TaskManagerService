@@ -16,11 +16,11 @@ public class MessageExchanger {
         this.strategy = messageExchangeStrategy;
     }
     
-    public Object exchangeMessage(String message) {
-        return strategy.exchangeMessage(message);
+    public <T> T exchangeMessage(String message, Class<T> object) {
+        return strategy.exchangeMessage(message, object);
     }
 
-    public Object exchangeMessage(String message, String routingKey) {
-        return strategy.exchangeMessage(message, routingKey);
+    public <T> T exchangeMessage(String message, String routingKey, Class<T> object) {
+        return strategy.exchangeMessage(message, routingKey, object);
     }
 }

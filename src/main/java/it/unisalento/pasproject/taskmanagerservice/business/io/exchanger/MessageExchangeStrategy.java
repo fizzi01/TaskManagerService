@@ -1,6 +1,6 @@
 package it.unisalento.pasproject.taskmanagerservice.business.io.exchanger;
 
 public interface MessageExchangeStrategy {
-    Object exchangeMessage(String message);
-    Object exchangeMessage(String message, String routingKey);
+    <T> T exchangeMessage(String message, Class<T> object);
+    <T> T exchangeMessage(String message, String routingKey, Class<T> object);
 }
