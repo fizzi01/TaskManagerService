@@ -33,7 +33,7 @@ services:
 
 networks:
   taskman-net:
-    name: taskman-net
+    name: taskman_net
     driver:
       "bridge"
 
