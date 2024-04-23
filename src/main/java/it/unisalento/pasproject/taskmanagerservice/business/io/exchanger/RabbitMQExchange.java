@@ -55,14 +55,26 @@ public class RabbitMQExchange implements MessageExchangeStrategy{
 
     @Override
     public <T> T exchangeMessage(String message, String routingKey, Class<T> object){
-        // Creare un messaggio
-        Message request = MessageBuilder.withBody(message.getBytes())
-                .setContentType(MediaType.APPLICATION_JSON_VALUE)
-                .build();
 
         // Inviare il messaggio e attendere una risposta
         ParameterizedTypeReference<T> typeReference = new ParameterizedTypeReference<T>() {};
-        T res = rabbitTemplate.convertSendAndReceiveAsType(exchange, routingKey,request, typeReference);
+        T res = rabbitTemplate.convertSendAndReceiveAsType(exchange, routingKey,message, typeReference);
+
+        // Verificare se è stata ricevuta una risposta
+        if (res == null) {
+            throw new UsernameNotFoundException(message);
+        }
+
+        // Restituire la risposta
+        return res;
+    }
+
+    @Override
+    public <T> T exchangeMessage(String message, String routingKey, String exchange, Class<T> object) {
+
+        // Inviare il messaggio e attendere una risposta
+        ParameterizedTypeReference<T> typeReference = new ParameterizedTypeReference<T>() {};
+        T res = rabbitTemplate.convertSendAndReceiveAsType(exchange, routingKey,message, typeReference);
 
         //Message response = rabbitTemplate.sendAndReceive(exchange, routingKey, request);
 
@@ -73,5 +85,12 @@ public class RabbitMQExchange implements MessageExchangeStrategy{
 
         // Restituire la risposta
         return res;
+    }
+
+    @Override
+    public <T, R> R exchangeMessage(T message, String routingKey, String exchange, Class<R> responseType) {
+        rabbitTemplate.setReplyTimeout(1000); // Timeout di 1 secondo
+        return rabbitTemplate.convertSendAndReceiveAsType(exchange, routingKey, message,
+                new ParameterizedTypeReference<R>() {});
     }
 }

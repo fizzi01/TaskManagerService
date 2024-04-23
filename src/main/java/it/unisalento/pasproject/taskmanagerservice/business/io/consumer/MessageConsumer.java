@@ -17,4 +17,8 @@ public class MessageConsumer {
     public <T> T consumeMessage(T message) {
         return strategy.consumeMessage(message);
     }
+
+    public String consumeMessage(String message, String queueName) {
+        return strategy.consumeMessage(message, queueName);
+    }
 }

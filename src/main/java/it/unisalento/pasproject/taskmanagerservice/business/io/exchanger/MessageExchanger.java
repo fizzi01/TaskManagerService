@@ -23,4 +23,12 @@ public class MessageExchanger {
     public <T> T exchangeMessage(String message, String routingKey, Class<T> object) {
         return strategy.exchangeMessage(message, routingKey, object);
     }
+
+    public <T> T exchangeMessage(String message, String routingKey,String exchange, Class<T> object) {
+        return strategy.exchangeMessage(message, routingKey, exchange,object);
+    }
+
+    public <T, R> R exchangeMessage(T message, String routingKey, String exchange, Class<R> responseType) {
+        return strategy.exchangeMessage(message, routingKey, exchange, responseType);
+    }
 }

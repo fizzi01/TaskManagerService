@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class RabbitMQConfig {
+
     @Value("${rabbitmq.queue.name}")
     private String queue;
 
@@ -25,6 +26,41 @@ public class RabbitMQConfig {
 
     @Value("${rabbitmq.routing.json.key}")
     private String routingJsonKey;
+
+
+    // ------  SECURITY  ------
+
+    // Needed by authentication service
+    @Value("${rabbitmq.queue.security.name}")
+    private String securityResponseQueue;
+
+    @Value("${rabbitmq.exchange.security.name}")
+    private String securityExchange;
+
+    @Value("${rabbitmq.routing.security.key}")
+    private String securityRequestRoutingKey;
+
+    @Bean
+    public Queue securityResponseQueue() {
+        return new Queue(securityResponseQueue);
+    }
+
+    @Bean
+    public TopicExchange securityExchange() {
+        return new TopicExchange(securityExchange);
+    }
+
+    @Bean
+    public Binding securityBinding() {
+        return BindingBuilder
+                .bind(securityResponseQueue())
+                .to(securityExchange())
+                .with(securityRequestRoutingKey);
+    }
+
+    // ------  END SECURITY  ------
+
+
 
     /**
      * Creates a queue for tasks.
