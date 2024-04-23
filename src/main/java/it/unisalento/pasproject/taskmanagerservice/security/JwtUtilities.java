@@ -3,6 +3,8 @@ package it.unisalento.pasproject.taskmanagerservice.security;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +17,8 @@ import static it.unisalento.pasproject.taskmanagerservice.security.SecurityConst
 @Service
 public class JwtUtilities {
     private final Key key = Keys.hmacShaKeyFor(JWT_SECRET.getBytes());
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(JwtUtilities.class);
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -44,6 +48,7 @@ public class JwtUtilities {
 
     public Boolean validateToken(String token, UserDetails userDetails) {
         final String username = extractUsername(token);
+        LOGGER.info(String.format("Validating token for user: %s", username));
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 }

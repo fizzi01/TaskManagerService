@@ -15,17 +15,10 @@ public class MessageProducer {
         this.strategy = strategy;
     }
 
-    public <T> void sendMessage(T message, String routingKey) {
-        strategy.sendMessage(message, routingKey);
-    }
-
     public <T> void sendMessage(T messageDTO, String routingKey, String exchange) {
         strategy.sendMessage(messageDTO, routingKey, exchange);
     }
 
-    public <T> void sendMessage(T messageDTO) {
-        strategy.sendMessage(messageDTO);
-    }
 
     public <T> void sendMessage(T messageDTO, String routingKey, String exchange, String replyTo) {
         strategy.sendMessage(messageDTO, routingKey, exchange, replyTo);

@@ -15,14 +15,6 @@ public class MessageExchanger {
     public MessageExchanger(MessageExchangeStrategy messageExchangeStrategy) {
         this.strategy = messageExchangeStrategy;
     }
-    
-    public <T> T exchangeMessage(String message, Class<T> object) {
-        return strategy.exchangeMessage(message, object);
-    }
-
-    public <T> T exchangeMessage(String message, String routingKey, Class<T> object) {
-        return strategy.exchangeMessage(message, routingKey, object);
-    }
 
     public <T> T exchangeMessage(String message, String routingKey,String exchange, Class<T> object) {
         return strategy.exchangeMessage(message, routingKey, exchange,object);

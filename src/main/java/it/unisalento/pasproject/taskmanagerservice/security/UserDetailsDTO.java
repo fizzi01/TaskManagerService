@@ -8,7 +8,7 @@ import lombok.Setter;
 public class UserDetailsDTO {
     private String email;
     private String role;
-    private Boolean enable;
+    private Boolean enabled;
 
     public UserDetailsDTO() {
     }
@@ -16,7 +16,7 @@ public class UserDetailsDTO {
     public UserDetailsDTO(String email, String role, Boolean enable) {
         this.email = email;
         this.role = role;
-        this.enable = true;
+        this.enabled = true;
     }
 
 }

@@ -1,8 +1,5 @@
 package it.unisalento.pasproject.taskmanagerservice.controller;
 
-import it.unisalento.pasproject.taskmanagerservice.business.io.consumer.MessageConsumer;
-import it.unisalento.pasproject.taskmanagerservice.business.io.exchanger.MessageExchangeStrategy;
-import it.unisalento.pasproject.taskmanagerservice.business.io.producer.MessageProducer;
 import it.unisalento.pasproject.taskmanagerservice.domain.Task;
 import it.unisalento.pasproject.taskmanagerservice.dto.TaskCreationDTO;
 import it.unisalento.pasproject.taskmanagerservice.dto.TaskDTO;
@@ -12,10 +9,7 @@ import it.unisalento.pasproject.taskmanagerservice.exceptions.TaskNotFoundExcept
 import it.unisalento.pasproject.taskmanagerservice.repositories.TaskRepository;
 import it.unisalento.pasproject.taskmanagerservice.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -25,28 +19,6 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/tasks")
 public class TaskController {
-    /**
-     * Producer instance for sending simple messages.
-     */
-
-    @Autowired
-    private MessageProducer messageProducer;
-
-    @Autowired
-    private MessageConsumer messageConsumer;
-
-    @Autowired
-    @Qualifier("RabbitMQExchange")
-    private MessageExchangeStrategy rabbitStrategy;
-
-    @Value("${rabbitmq.exchange.security.name}")
-    private String securityExchange;
-
-    @Value("${rabbitmq.routing.security.key}")
-    private String securityRoutingKey;
-
-    @Value("${rabbitmq.queue.security.name}")
-    private String securityQueue;
 
     /**
      * TaskRepository instance for accessing the task data.
@@ -57,42 +29,6 @@ public class TaskController {
     @Autowired
     private TaskService taskService;
 
-    /**
-     * Endpoint for sending a simple message to RabbitMQ.
-     *
-     * @param message The message to send.
-     * @return A ResponseEntity indicating that the message was sent.
-     */
-    @GetMapping(value="/test")
-    public ResponseEntity<String> sendMessage(@RequestParam("message") String message) {
-        messageProducer.sendMessage(message);
-        return ResponseEntity.ok("Message sent");
-    }
-
-    @GetMapping(value="/exchange")
-    public ResponseEntity<String> exchangeMessage(@RequestParam("message") String message) {
-        String response = rabbitStrategy.exchangeMessage(message,securityRoutingKey,securityExchange,String.class);
-        return ResponseEntity.ok(response);
-    }
-
-    @GetMapping(value="/respond")
-    public ResponseEntity<String> sendMessage2(@RequestParam("message") String message) {
-        String response = messageConsumer.consumeMessage(message,securityQueue);
-        messageProducer.sendMessage(message,securityRoutingKey,securityExchange);
-        return ResponseEntity.ok(response);
-    }
-
-    /**
-     * Endpoint for sending a JSON message to RabbitMQ.
-     *
-     * @param taskDTO The TaskDTO to send as a JSON message.
-     * @return A ResponseEntity indicating that the JSON message was sent.
-     */
-    @PostMapping(value="/test")
-    public ResponseEntity<String> sendMessage(@RequestBody TaskDTO taskDTO) {
-        messageProducer.sendMessage(taskDTO);
-        return ResponseEntity.ok("Json message sent");
-    }
 
     /**
      * This method is used to find tasks based on various filters.

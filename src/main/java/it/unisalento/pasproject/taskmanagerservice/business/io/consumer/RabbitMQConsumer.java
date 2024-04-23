@@ -1,12 +1,9 @@
 package it.unisalento.pasproject.taskmanagerservice.business.io.consumer;
 
-import it.unisalento.pasproject.taskmanagerservice.business.io.producer.MessageProducer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
@@ -16,26 +13,6 @@ import java.util.Objects;
  */
 @Service("RabbitMQConsumer")
 public class RabbitMQConsumer implements MessageConsumerStrategy{
-    /**
-     * The name of the RabbitMQ exchange to send messages to.
-     */
-    @Value("${rabbitmq.exchange.name}")
-    private String exchange;
-
-    /**
-     * The routing key to use when sending messages to the RabbitMQ exchange.
-     */
-    @Value("${rabbitmq.routing.key}")
-    private String routingKey;
-
-    @Autowired
-    private MessageProducer messageProducer;
-
-    @Value("${rabbitmq.exchange.security.name}")
-    private String securityExchange;
-
-    @Value("${rabbitmq.routing.security.key}")
-    private String securityRoutingKey;
 
     /**
      * Logger instance for logging events.
