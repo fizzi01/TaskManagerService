@@ -8,7 +8,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
 
 @Service("RabbitMQExchange")
-public class RabbitMQExchange implements MessageExchangeStrategy{
+public class RabbitMQExchange implements MessageExchangeStrategy {
 
 
     private final RabbitTemplate rabbitTemplate;

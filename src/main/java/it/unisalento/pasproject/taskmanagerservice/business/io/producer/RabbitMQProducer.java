@@ -39,13 +39,13 @@ public class RabbitMQProducer implements MessageProducerStrategy {
     }
 
     /**
-     * Method to send a Object message to RabbitMQ.
+     * Method to send an Object message to RabbitMQ.
      * <p>
      * Utilizzando il replyTo header nei messaggi,
      * il servizio ricevente può automaticamente inviare
      * la risposta alla coda appropriata senza necessità di
      * configurazioni aggiuntive o hardcoded.
-     *</p>
+     * </p>
      * @param messageDTO The Object to send as a JSON message.
      * @param routingKey The routing key to use when sending the message.
      * @param exchange The exchange to send the message to.
