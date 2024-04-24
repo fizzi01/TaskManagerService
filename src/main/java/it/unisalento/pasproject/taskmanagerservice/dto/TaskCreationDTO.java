@@ -59,6 +59,12 @@ public class TaskCreationDTO {
     private String description;
 
     /**
+     * The script of code associated with the task.
+     * This should be a link to the script file and should be filled by another service.
+     */
+    private String script;
+
+    /**
      * The current status of the task.
      * If true, the task is currently running. If false, the task is not currently running.
      */
