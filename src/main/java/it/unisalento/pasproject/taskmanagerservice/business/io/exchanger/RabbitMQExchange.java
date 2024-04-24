@@ -22,21 +22,21 @@ public class RabbitMQExchange implements MessageExchangeStrategy{
 
 
 
-@Override
-public <T> T exchangeMessage(String message, String routingKey, String exchange, Class<T> object) {
-    rabbitTemplate.setReplyTimeout(1000); // Timeout di 1 secondo
-    T response = rabbitTemplate.convertSendAndReceiveAsType(exchange, routingKey, message,
-            ParameterizedTypeReference.forType(object));
-    LOGGER.info("Message received: {}", response);
-    return response;
-}
+    @Override
+    public <T> T exchangeMessage(String message, String routingKey, String exchange, Class<T> object) {
+        rabbitTemplate.setReplyTimeout(1000); // Timeout di 1 secondo
+        T response = rabbitTemplate.convertSendAndReceiveAsType(exchange, routingKey, message,
+                ParameterizedTypeReference.forType(object));
+        LOGGER.info("Message received: {}", response);
+        return response;
+    }
 
-@Override
-public <T, R> R exchangeMessage(T message, String routingKey, String exchange, Class<R> responseType) {
-    rabbitTemplate.setReplyTimeout(1000); // Timeout di 1 secondo
-    R response = rabbitTemplate.convertSendAndReceiveAsType(exchange, routingKey, message,
-            ParameterizedTypeReference.forType(responseType));
-    LOGGER.info("Message received: {}", response);
-    return response;
-}
+    @Override
+    public <T, R> R exchangeMessage(T message, String routingKey, String exchange, Class<R> responseType) {
+        rabbitTemplate.setReplyTimeout(1000); // Timeout di 1 secondo
+        R response = rabbitTemplate.convertSendAndReceiveAsType(exchange, routingKey, message,
+                ParameterizedTypeReference.forType(responseType));
+        LOGGER.info("Message received: {}", response);
+        return response;
+    }
 }
