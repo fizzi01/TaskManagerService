@@ -146,7 +146,7 @@ public class TaskController {
         task.setMinWorkingTime(newTask.getMinWorkingTime());
         task.setDescription(newTask.getDescription());
         task.setTaskDuration(newTask.getTaskDuration());
-        task.setEnabled(true); //Initially disabled, waiting for script upload
+        task.setEnabled(false); //Initially disabled, waiting for script upload
         task.setScript(null);
         task.setRunning(newTask.getRunning());
         task.setAssignedUsers(null);
