@@ -34,7 +34,7 @@ public class SecurityConfig {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         // Configurazione CORS
-        http.cors(AbstractHttpConfigurer::disable); // Disabilita CORS, se necessario
+        http.cors(AbstractHttpConfigurer::disable); // Disabilita CORS
 
         // Configurazione CSRF
         http.csrf(AbstractHttpConfigurer::disable); // Disabilita CSRF

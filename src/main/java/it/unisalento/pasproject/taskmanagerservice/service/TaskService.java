@@ -1,7 +1,10 @@
 package it.unisalento.pasproject.taskmanagerservice.service;
 
+import it.unisalento.pasproject.taskmanagerservice.controller.TaskController;
 import it.unisalento.pasproject.taskmanagerservice.domain.Task;
 import it.unisalento.pasproject.taskmanagerservice.dto.TaskDTO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -9,12 +12,16 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class TaskService {
 
     @Autowired
     private MongoTemplate mongoTemplate;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(TaskService.class);
+
 
     /**
      * Converts a Task domain object into a TaskDTO object.
@@ -61,18 +68,16 @@ public class TaskService {
     public List<Task> findTasks(Boolean running, Boolean enabled , String email, String name, Double maxComputingPower, Double minComputingPower, Double maxEnergyConsumption, Double minEnergyConsumption, Double taskDuration) {
         Query query = new Query();
 
+        query.addCriteria(Criteria.where("emailUtente").is(email));
+
+        // If enabled is not provided, only return enabled tasks
+        query.addCriteria(Criteria.where("enabled").is(Objects.requireNonNullElse(enabled, true)));
+
         // Add conditions based on parameters provided
         if (running != null) {
             query.addCriteria(Criteria.where("running").is(running));
         }
-        if (enabled != null) {
-            query.addCriteria(Criteria.where("enabled").is(enabled));
-        } else { // If enabled is not provided, only return enabled tasks
-            query.addCriteria(Criteria.where("enabled").is(true));
-        }
-        if (email != null) {
-            query.addCriteria(Criteria.where("emailUtente").is(email));
-        }
+
         if (name != null) {
             query.addCriteria(Criteria.where("name").is(name));
         }
@@ -92,6 +97,12 @@ public class TaskService {
             query.addCriteria(Criteria.where("taskDuration").gte(taskDuration));
         }
 
-        return mongoTemplate.find(query, Task.class);
+        LOGGER.info("\n{}\n", query.toString());
+
+        List<Task> tasks = mongoTemplate.find(query, Task.class, mongoTemplate.getCollectionName(Task.class));
+
+        LOGGER.info("\nTasks: {}\n", tasks);
+
+        return tasks;
     }
 }

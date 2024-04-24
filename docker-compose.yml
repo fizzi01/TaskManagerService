@@ -13,7 +13,7 @@ services:
     depends_on:
       - taskman-db
     networks:
-      - taskman-net
+      - greenspot-net
     volumes:
       - ./build/libs/TaskManagerService-v0.1.3.jar:/app/app.jar
     working_dir: /app
@@ -29,13 +29,12 @@ services:
       - mongo_taskman_data:/data/db
       - mongo_taskman_config:/data/configdb
     networks:
-      - taskman-net
+      - greenspot-net
 
 networks:
-  taskman-net:
-    name: taskman_net
-    driver:
-      "bridge"
+  greenspot-net:
+    name: greenspot_net
+    external: true
 
 volumes:
     mongo_taskman:

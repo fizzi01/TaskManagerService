@@ -7,7 +7,10 @@ import it.unisalento.pasproject.taskmanagerservice.dto.TaskFindingDTO;
 import it.unisalento.pasproject.taskmanagerservice.dto.TaskListDTO;
 import it.unisalento.pasproject.taskmanagerservice.exceptions.TaskNotFoundException;
 import it.unisalento.pasproject.taskmanagerservice.repositories.TaskRepository;
+import it.unisalento.pasproject.taskmanagerservice.security.JwtAuthenticationFilter;
 import it.unisalento.pasproject.taskmanagerservice.service.TaskService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +31,6 @@ public class TaskController {
 
     @Autowired
     private TaskService taskService;
-
 
     /**
      * This method is used to find tasks based on various filters.
@@ -70,7 +72,6 @@ public class TaskController {
                 minEnergyConsumption,
                 taskDuration
         );
-
 
         if(tasks.isEmpty()) {
             throw new TaskNotFoundException();
@@ -145,7 +146,7 @@ public class TaskController {
         task.setMinWorkingTime(newTask.getMinWorkingTime());
         task.setDescription(newTask.getDescription());
         task.setTaskDuration(newTask.getTaskDuration());
-        task.setEnabled(false); //Initially disabled, waiting for script upload
+        task.setEnabled(true); //Initially disabled, waiting for script upload
         task.setScript(null);
         task.setRunning(newTask.getRunning());
         task.setAssignedUsers(null);
@@ -254,6 +255,23 @@ public class TaskController {
         retTask = taskRepository.save(retTask);
 
         return taskService.getTaskDTO(retTask);
+    }
+
+    @GetMapping(value="/find/all")
+    public TaskListDTO getAllTasks() {
+        TaskListDTO taskList = new TaskListDTO();
+        List<TaskDTO> list = new ArrayList<>();
+        taskList.setTasks(list);
+
+        List<Task> tasks = taskRepository.findAll();
+
+        for (Task task : tasks){
+            TaskDTO taskDTO = taskService.getTaskDTO(task);
+
+            list.add(taskDTO);
+        }
+
+        return taskList;
     }
 
 }
