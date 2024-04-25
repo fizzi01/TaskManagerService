@@ -7,13 +7,13 @@ import it.unisalento.pasproject.taskmanagerservice.dto.TaskFindingDTO;
 import it.unisalento.pasproject.taskmanagerservice.dto.TaskListDTO;
 import it.unisalento.pasproject.taskmanagerservice.exceptions.TaskNotFoundException;
 import it.unisalento.pasproject.taskmanagerservice.repositories.TaskRepository;
-import it.unisalento.pasproject.taskmanagerservice.security.JwtAuthenticationFilter;
 import it.unisalento.pasproject.taskmanagerservice.service.TaskService;
-import jakarta.annotation.security.RolesAllowed;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -33,6 +33,7 @@ public class TaskController {
     @Autowired
     private TaskService taskService;
 
+
     /**
      * This method is used to find tasks based on various filters.
      *
@@ -48,7 +49,7 @@ public class TaskController {
      * @throws TaskNotFoundException If no tasks are found that match the provided filters.
      */
     @GetMapping(value="/find")
-    @RolesAllowed("${service.role.utente.name}")
+    @Secured({"UTENTE"})
     public TaskListDTO getByFilters(@RequestParam() String email,
                                     @RequestParam(required = false) Boolean running,
                                     @RequestParam(required = false) Boolean enabled,
@@ -96,7 +97,7 @@ public class TaskController {
      * @throws TaskNotFoundException If no tasks are found that match the provided filters.
      */
     @PostMapping(value="/find", consumes = MediaType.APPLICATION_JSON_VALUE)
-    @RolesAllowed("${service.role.utente.name}")
+    @Secured({"UTENTE"})
     public TaskListDTO getByFilters(@RequestBody TaskFindingDTO taskToFind) throws TaskNotFoundException{
         TaskListDTO taskList = new TaskListDTO();
         List<TaskDTO> list = new ArrayList<>();
@@ -136,7 +137,7 @@ public class TaskController {
      * @throws TaskNotFoundException If the task could not be created.
      */
     @PostMapping(value="/create", consumes = MediaType.APPLICATION_JSON_VALUE)
-    @RolesAllowed("${service.role.utente.name}")
+    @Secured({"UTENTE"})
     public TaskDTO createTask(@RequestBody TaskCreationDTO newTask) throws TaskNotFoundException{
 
         Task task = new Task();
@@ -169,7 +170,7 @@ public class TaskController {
      * @throws TaskNotFoundException If the task could not be updated.
      */
     @PutMapping(value="/update", consumes = MediaType.APPLICATION_JSON_VALUE)
-    @RolesAllowed("${service.role.utente.name}")
+    @Secured({"UTENTE"})
     public TaskDTO updateTask(@RequestBody TaskDTO taskToUpdate) throws TaskNotFoundException{
 
         Optional<Task> task = taskRepository.findById(taskToUpdate.getId());
@@ -200,7 +201,7 @@ public class TaskController {
     }
 
     @PutMapping(value="/enable/{id}")
-    @RolesAllowed("${service.role.utente.name}")
+    @Secured({"UTENTE"})
     public TaskDTO enableTask(@PathVariable String id) throws TaskNotFoundException{
 
         Optional<Task> task = taskRepository.findById(id);
@@ -217,7 +218,7 @@ public class TaskController {
     }
 
     @PutMapping(value="/disable/{id}")
-    @RolesAllowed("${service.role.utente.name}")
+    @Secured({"UTENTE"})
     public TaskDTO disableTask(@PathVariable String id) throws TaskNotFoundException{
 
         Optional<Task> task = taskRepository.findById(id);
@@ -234,7 +235,7 @@ public class TaskController {
     }
 
     @PutMapping(value="/run/{id}")
-    @RolesAllowed("${service.role.utente.name}")
+    @Secured({"UTENTE"})
     public TaskDTO runTask(@PathVariable String id) throws TaskNotFoundException{
 
         Optional<Task> task = taskRepository.findById(id);
@@ -251,7 +252,7 @@ public class TaskController {
     }
 
     @PutMapping(value="/stop/{id}")
-    @RolesAllowed("${service.role.utente.name}")
+    @Secured({"UTENTE"})
     public TaskDTO stopTask(@PathVariable String id) throws TaskNotFoundException{
 
         Optional<Task> task = taskRepository.findById(id);
@@ -268,7 +269,7 @@ public class TaskController {
     }
 
     @GetMapping(value="/find/all")
-    @RolesAllowed("${service.role.utente.name}")
+    @Secured({"UTENTE"})
     public TaskListDTO getAllTasks() {
         TaskListDTO taskList = new TaskListDTO();
         List<TaskDTO> list = new ArrayList<>();
