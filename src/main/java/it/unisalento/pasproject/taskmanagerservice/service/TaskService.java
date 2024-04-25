@@ -1,6 +1,5 @@
 package it.unisalento.pasproject.taskmanagerservice.service;
 
-import it.unisalento.pasproject.taskmanagerservice.controller.TaskController;
 import it.unisalento.pasproject.taskmanagerservice.domain.Task;
 import it.unisalento.pasproject.taskmanagerservice.dto.TaskDTO;
 import org.slf4j.Logger;
