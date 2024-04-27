@@ -2,6 +2,7 @@ package it.unisalento.pasproject.taskmanagerservice.service;
 
 import it.unisalento.pasproject.taskmanagerservice.domain.Task;
 import it.unisalento.pasproject.taskmanagerservice.dto.TaskDTO;
+import it.unisalento.pasproject.taskmanagerservice.dto.TaskMessageDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +49,21 @@ public class TaskService {
         taskDTO.setRunning(task.getRunning());
         taskDTO.setAssignedUsers(task.getAssignedUsers());
         return taskDTO;
+    }
+
+    public TaskMessageDTO getTaskMessageDTO(Task task){
+        TaskMessageDTO taskMessageDTO = new TaskMessageDTO();
+        taskMessageDTO.setId(task.getId());
+        taskMessageDTO.setEmailUtente(task.getEmailUtente());
+        taskMessageDTO.setMaxComputingPower(task.getMaxComputingPower());
+        taskMessageDTO.setTaskDuration(task.getTaskDuration());
+        taskMessageDTO.setMaxEnergyConsumption(task.getMaxEnergyConsumption());
+        taskMessageDTO.setMinComputingPower(task.getMinComputingPower());
+        taskMessageDTO.setMinEnergyConsumption(task.getMinEnergyConsumption());
+        taskMessageDTO.setMinWorkingTime(task.getMinWorkingTime());
+        taskMessageDTO.setRunning(task.getRunning());
+        taskMessageDTO.setEnabled(task.getEnabled());
+        return taskMessageDTO;
     }
 
 

@@ -7,6 +7,7 @@ import it.unisalento.pasproject.taskmanagerservice.dto.TaskFindingDTO;
 import it.unisalento.pasproject.taskmanagerservice.dto.TaskListDTO;
 import it.unisalento.pasproject.taskmanagerservice.exceptions.TaskNotFoundException;
 import it.unisalento.pasproject.taskmanagerservice.repositories.TaskRepository;
+import it.unisalento.pasproject.taskmanagerservice.service.TaskMessageHandler;
 import it.unisalento.pasproject.taskmanagerservice.service.TaskService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,9 @@ public class TaskController {
 
     @Autowired
     private TaskService taskService;
+
+    @Autowired
+    private TaskMessageHandler taskMessageHandler;
 
 
     /**
@@ -159,6 +163,9 @@ public class TaskController {
 
         task = taskRepository.save(task);
 
+        // Send message to other services
+        taskMessageHandler.sendNewTaskMessage(taskService.getTaskMessageDTO(task));
+
         return taskService.getTaskDTO(task);
     }
 
@@ -197,6 +204,9 @@ public class TaskController {
 
         retTask = taskRepository.save(retTask);
 
+        //Send Messages to other services
+        taskMessageHandler.sendUpdateTaskMessage(taskService.getTaskMessageDTO(retTask));
+
         return taskService.getTaskDTO(retTask);
     }
 
@@ -213,6 +223,9 @@ public class TaskController {
         Task retTask = task.get();
         retTask.setEnabled(true);
         retTask = taskRepository.save(retTask);
+
+        //Send Messages to other services
+        taskMessageHandler.sendUpdateTaskMessage(taskService.getTaskMessageDTO(retTask));
 
         return taskService.getTaskDTO(retTask);
     }
@@ -231,6 +244,9 @@ public class TaskController {
         retTask.setEnabled(false);
         retTask = taskRepository.save(retTask);
 
+        //Send Messages to other services
+        taskMessageHandler.sendUpdateTaskMessage(taskService.getTaskMessageDTO(retTask));
+
         return taskService.getTaskDTO(retTask);
     }
 
@@ -248,6 +264,9 @@ public class TaskController {
         retTask.setRunning(true);
         retTask = taskRepository.save(retTask);
 
+        //Send Messages to other services
+        taskMessageHandler.sendUpdateTaskMessage(taskService.getTaskMessageDTO(retTask));
+
         return taskService.getTaskDTO(retTask);
     }
 
@@ -264,6 +283,9 @@ public class TaskController {
         Task retTask = task.get();
         retTask.setRunning(false);
         retTask = taskRepository.save(retTask);
+
+        //Send Messages to other services
+        taskMessageHandler.sendUpdateTaskMessage(taskService.getTaskMessageDTO(retTask));
 
         return taskService.getTaskDTO(retTask);
     }
