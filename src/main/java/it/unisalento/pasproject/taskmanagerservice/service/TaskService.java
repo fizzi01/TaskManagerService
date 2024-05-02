@@ -39,6 +39,8 @@ public class TaskService {
         taskDTO.setName(task.getName());
         taskDTO.setEmailUtente(task.getEmailUtente());
         taskDTO.setMaxComputingPower(task.getMaxComputingPower());
+        taskDTO.setMaxCudaPower(task.getMaxCudaPower());
+        taskDTO.setMinCudaPower(task.getMinCudaPower());
         taskDTO.setTaskDuration(task.getTaskDuration());
         taskDTO.setMaxEnergyConsumption(task.getMaxEnergyConsumption());
         taskDTO.setMinComputingPower(task.getMinComputingPower());
@@ -56,6 +58,8 @@ public class TaskService {
         taskMessageDTO.setId(task.getId());
         taskMessageDTO.setEmailUtente(task.getEmailUtente());
         taskMessageDTO.setMaxComputingPower(task.getMaxComputingPower());
+        taskMessageDTO.setMaxCudaPower(task.getMaxCudaPower());
+        taskMessageDTO.setMinCudaPower(task.getMinCudaPower());
         taskMessageDTO.setTaskDuration(task.getTaskDuration());
         taskMessageDTO.setMaxEnergyConsumption(task.getMaxEnergyConsumption());
         taskMessageDTO.setMinComputingPower(task.getMinComputingPower());
@@ -74,13 +78,15 @@ public class TaskService {
      * @param email The email of the user associated with the tasks to find.
      * @param name The name of the tasks to find.
      * @param maxComputingPower The maximum computing power of the tasks to find.
+     * @param maxCudaPower The maximum cuda power of the tasks to find.
+     * @param minCudaPower The minimum cuda power of the tasks to find.
      * @param minComputingPower The minimum computing power of the tasks to find.
      * @param maxEnergyConsumption The maximum energy consumption of the tasks to find.
      * @param minEnergyConsumption The minimum energy consumption of the tasks to find.
      * @param taskDuration The duration of the tasks to find.
      * @return A list of tasks that match the given criteria.
      */
-    public List<Task> findTasks(Boolean running, Boolean enabled , String email, String name, Double maxComputingPower, Double minComputingPower, Double maxEnergyConsumption, Double minEnergyConsumption, Double taskDuration) {
+    public List<Task> findTasks(Boolean running, Boolean enabled , String email, String name, Double maxComputingPower,Double maxCudaPower, Double minCudaPower, Double minComputingPower, Double maxEnergyConsumption, Double minEnergyConsumption, Double taskDuration) {
         Query query = new Query();
 
         query.addCriteria(Criteria.where("emailUtente").is(email));
@@ -99,6 +105,12 @@ public class TaskService {
         if (maxComputingPower != null) {
             query.addCriteria(Criteria.where("maxComputingPower").lte(maxComputingPower));
         }
+        if (maxCudaPower != null) {
+            query.addCriteria(Criteria.where("maxCudaPower").lte(maxCudaPower));
+        }
+        if (minCudaPower != null) {
+            query.addCriteria(Criteria.where("minCudaPower").gte(minCudaPower));
+        }
         if (minComputingPower != null) {
             query.addCriteria(Criteria.where("minComputingPower").gte(minComputingPower));
         }
@@ -112,12 +124,6 @@ public class TaskService {
             query.addCriteria(Criteria.where("taskDuration").gte(taskDuration));
         }
 
-        LOGGER.info("\n{}\n", query.toString());
-
-        List<Task> tasks = mongoTemplate.find(query, Task.class, mongoTemplate.getCollectionName(Task.class));
-
-        LOGGER.info("\nTasks: {}\n", tasks);
-
-        return tasks;
+        return mongoTemplate.find(query, Task.class, mongoTemplate.getCollectionName(Task.class));
     }
 }

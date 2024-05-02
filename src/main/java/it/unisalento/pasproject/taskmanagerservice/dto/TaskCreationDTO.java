@@ -36,6 +36,17 @@ public class TaskCreationDTO {
     private double maxEnergyConsumption;
 
     /**
+     * The maximum cuda power that the task can use.
+     */
+    private double maxCudaPower;
+
+    /**
+     * The minimum cuda power that the task requires.
+     */
+    private double minCudaPower;
+
+
+    /**
      * The minimum computing power that the task requires.
      * This is a measure of the minimum computational resources the task needs to run.
      */

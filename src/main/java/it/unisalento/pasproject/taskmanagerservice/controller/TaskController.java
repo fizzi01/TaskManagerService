@@ -11,10 +11,8 @@ import it.unisalento.pasproject.taskmanagerservice.service.TaskMessageHandler;
 import it.unisalento.pasproject.taskmanagerservice.service.TaskService;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -59,6 +57,8 @@ public class TaskController {
                                     @RequestParam(required = false) Boolean enabled,
                                     @RequestParam(required = false) String name,
                                     @RequestParam(required = false) Double maxComputingPower,
+                                    @RequestParam(required = false) Double minCudaPower,
+                                    @RequestParam(required = false) Double maxCudaPower,
                                     @RequestParam(required = false) Double minComputingPower,
                                     @RequestParam(required = false) Double maxEnergyConsumption,
                                     @RequestParam(required = false) Double minEnergyConsumption,
@@ -74,6 +74,8 @@ public class TaskController {
                 email,
                 name,
                 maxComputingPower,
+                maxCudaPower,
+                minCudaPower,
                 minComputingPower,
                 maxEnergyConsumption,
                 minEnergyConsumption,
@@ -113,6 +115,8 @@ public class TaskController {
                 taskToFind.getEmailUtente(),
                 taskToFind.getName(),
                 taskToFind.getMaxComputingPower(),
+                taskToFind.getMaxCudaPower(),
+                taskToFind.getMinCudaPower(),
                 taskToFind.getMinComputingPower(),
                 taskToFind.getMaxEnergyConsumption(),
                 taskToFind.getMinEnergyConsumption(),
@@ -148,8 +152,10 @@ public class TaskController {
         task.setName(newTask.getName());
         task.setEmailUtente(newTask.getEmailUtente());
         task.setMaxComputingPower(newTask.getMaxComputingPower());
-        task.setTaskDuration(task.getTaskDuration());
+        task.setTaskDuration(newTask.getTaskDuration());
         task.setMaxEnergyConsumption(newTask.getMaxEnergyConsumption());
+        task.setMaxCudaPower(newTask.getMaxCudaPower());
+        task.setMinCudaPower(newTask.getMinCudaPower());
         task.setMinComputingPower(newTask.getMinComputingPower());
         task.setMinEnergyConsumption(newTask.getMinEnergyConsumption());
         task.setMinWorkingTime(newTask.getMinWorkingTime());
@@ -191,12 +197,12 @@ public class TaskController {
         // Utilizza Optional per verificare se un valore è presente o meno
         Optional.of(taskToUpdate.getName()).ifPresent(retTask::setName);
         Optional.of(taskToUpdate.getEmailUtente()).ifPresent(retTask::setEmailUtente);
-        Optional.ofNullable(taskToUpdate.getMaxComputingPower()).ifPresent(retTask::setMaxComputingPower);
-        Optional.ofNullable(taskToUpdate.getTaskDuration()).ifPresent(retTask::setTaskDuration);
-        Optional.ofNullable(taskToUpdate.getMaxEnergyConsumption()).ifPresent(retTask::setMaxEnergyConsumption);
-        Optional.ofNullable(taskToUpdate.getMinComputingPower()).ifPresent(retTask::setMinComputingPower);
-        Optional.ofNullable(taskToUpdate.getMinEnergyConsumption()).ifPresent(retTask::setMinEnergyConsumption);
-        Optional.ofNullable(taskToUpdate.getMinWorkingTime()).ifPresent(retTask::setMinWorkingTime);
+        Optional.of(taskToUpdate.getMaxComputingPower()).ifPresent(retTask::setMaxComputingPower);
+        Optional.of(taskToUpdate.getTaskDuration()).ifPresent(retTask::setTaskDuration);
+        Optional.of(taskToUpdate.getMaxEnergyConsumption()).ifPresent(retTask::setMaxEnergyConsumption);
+        Optional.of(taskToUpdate.getMinComputingPower()).ifPresent(retTask::setMinComputingPower);
+        Optional.of(taskToUpdate.getMinEnergyConsumption()).ifPresent(retTask::setMinEnergyConsumption);
+        Optional.of(taskToUpdate.getMinWorkingTime()).ifPresent(retTask::setMinWorkingTime);
         Optional.ofNullable(taskToUpdate.getDescription()).ifPresent(retTask::setDescription);
         Optional.ofNullable(taskToUpdate.getScript()).ifPresent(retTask::setScript);
         Optional.ofNullable(taskToUpdate.getRunning()).ifPresent(retTask::setRunning);

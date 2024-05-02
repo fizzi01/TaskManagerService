@@ -30,6 +30,17 @@ public class TaskDTO {
     private double maxComputingPower;
 
     /**
+     * The maximum cuda power that the task can use.
+     */
+    private double maxCudaPower;
+
+    /**
+     * The minimum cuda power that the task requires.
+     */
+    private double minCudaPower;
+
+
+    /**
      * The expected duration of the task, in seconds.
      */
     private double taskDuration;
