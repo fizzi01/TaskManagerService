@@ -81,7 +81,7 @@ public class TaskController {
         );
 
         if(tasks.isEmpty()) {
-            throw new TaskNotFoundException();
+            throw new TaskNotFoundException("No tasks found with the provided filters.");
         }
 
         for (Task task : tasks){
@@ -121,7 +121,7 @@ public class TaskController {
 
 
         if(tasks.isEmpty()) {
-            throw new TaskNotFoundException();
+            throw new TaskNotFoundException("No tasks found with the provided filters.");
         }
 
         for (Task task : tasks){
@@ -183,7 +183,7 @@ public class TaskController {
         Optional<Task> task = taskRepository.findById(taskToUpdate.getId());
 
         if(task.isEmpty()) {
-            throw new TaskNotFoundException();
+            throw new TaskNotFoundException("Task not found with id: " + taskToUpdate.getId());
         }
 
         Task retTask = task.get();
@@ -217,7 +217,7 @@ public class TaskController {
         Optional<Task> task = taskRepository.findById(id);
 
         if(task.isEmpty()) {
-            throw new TaskNotFoundException();
+            throw new TaskNotFoundException("Task not found with id: " + id);
         }
 
         Task retTask = task.get();
@@ -237,7 +237,7 @@ public class TaskController {
         Optional<Task> task = taskRepository.findById(id);
 
         if(task.isEmpty()) {
-            throw new TaskNotFoundException();
+            throw new TaskNotFoundException("Task not found with id: " + id);
         }
 
         Task retTask = task.get();
@@ -257,7 +257,7 @@ public class TaskController {
         Optional<Task> task = taskRepository.findById(id);
 
         if(task.isEmpty()) {
-            throw new TaskNotFoundException();
+            throw new TaskNotFoundException("Task not found with id: " + id);
         }
 
         Task retTask = task.get();
@@ -277,7 +277,7 @@ public class TaskController {
         Optional<Task> task = taskRepository.findById(id);
 
         if(task.isEmpty()) {
-            throw new TaskNotFoundException();
+            throw new TaskNotFoundException("Task not found with id: " + id);
         }
 
         Task retTask = task.get();

@@ -1,6 +1,7 @@
 package it.unisalento.pasproject.taskmanagerservice.security;
 
 
+import it.unisalento.pasproject.taskmanagerservice.dto.UserDetailsDTO;
 import it.unisalento.pasproject.taskmanagerservice.service.UserCheckService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

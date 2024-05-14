@@ -3,7 +3,7 @@ package it.unisalento.pasproject.taskmanagerservice.service;
 
 import it.unisalento.pasproject.taskmanagerservice.business.io.exchanger.MessageExchangeStrategy;
 import it.unisalento.pasproject.taskmanagerservice.business.io.exchanger.MessageExchanger;
-import it.unisalento.pasproject.taskmanagerservice.security.UserDetailsDTO;
+import it.unisalento.pasproject.taskmanagerservice.dto.UserDetailsDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

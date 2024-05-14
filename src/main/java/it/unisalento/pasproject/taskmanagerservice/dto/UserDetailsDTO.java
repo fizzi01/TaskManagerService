@@ -1,4 +1,4 @@
-package it.unisalento.pasproject.taskmanagerservice.security;
+package it.unisalento.pasproject.taskmanagerservice.dto;
 
 import lombok.Getter;
 import lombok.Setter;
