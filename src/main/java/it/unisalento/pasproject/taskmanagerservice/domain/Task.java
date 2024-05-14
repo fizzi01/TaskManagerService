@@ -36,35 +36,46 @@ public class Task {
 
     /**
      * The maximum computing power that the task can use.
+     * Could be gpu or cpu related.
      */
     @NonNull
-    private double maxComputingPower;
+    private Double maxComputingPower;
+
+    /**
+     * The minimum computing power that the task requires.
+     */
+    private Double minComputingPower;
+
+    /**
+     * The maximum cuda power that the task can use.
+     */
+    private Double maxCudaPower;
+
+    /**
+     * The minimum cuda power that the task requires.
+     */
+    private Double minCudaPower;
 
     /**
      * The expected duration of the task, in seconds.
      */
     @NonNull
-    private double taskDuration;
+    private Double taskDuration;
 
     /**
      * The maximum energy consumption of the task.
      */
-    private double maxEnergyConsumption;
-
-    /**
-     * The minimum computing power that the task requires.
-     */
-    private double minComputingPower;
+    private Double maxEnergyConsumption;
 
     /**
      * The minimum energy consumption of the task.
      */
-    private double minEnergyConsumption;
+    private Double minEnergyConsumption;
 
     /**
      * The minimum working time of the task, in seconds.
      */
-    private double minWorkingTime;
+    private Double minWorkingTime;
 
     /**
      * A brief description of the task.
@@ -117,12 +128,14 @@ public class Task {
      * @param running The current status of the task.
      * @param assignedUsers The list of users assigned to the task.
      */
-    public Task(String id, String name, String emailUtente, String idUtente, double maxComputingPower, double taskDuration, double maxEnergyConsumption, double minComputingPower, double minEnergyConsumption, double minWorkingTime, String description, String script, Boolean running,Boolean enabled, List<String> assignedUsers) {
+    public Task(String id, String name, String emailUtente, String idUtente, Double maxComputingPower,Double maxCudaPower,Double minCudaPower ,Double taskDuration, Double maxEnergyConsumption, Double minComputingPower, Double minEnergyConsumption, Double minWorkingTime, String description, String script, Boolean running,Boolean enabled, List<String> assignedUsers) {
         this.id = id;
         this.name = name;
         this.emailUtente = emailUtente;
         this.idUtente = idUtente;
         this.maxComputingPower = maxComputingPower;
+        this.maxCudaPower = maxCudaPower;
+        this.minCudaPower = minCudaPower;
         this.taskDuration = taskDuration;
         this.maxEnergyConsumption = maxEnergyConsumption;
         this.minComputingPower = minComputingPower;

@@ -6,16 +6,16 @@ services:
     image: openjdk:22-jdk-oracle
     container_name: taskmanimage
     ports:
-      - 8080:8080
-      - 8000:8000
+      - 8081:8080
+      - 8001:8000
     expose:
-      - "8000"
+      - "8001"
     depends_on:
       - taskman-db
     networks:
       - greenspot-net
     volumes:
-      - ./build/libs/TaskManagerService-v1.0.8.jar:/app/app.jar
+      - ./build/libs/TaskManagerService-v1.0.10.jar:/app/app.jar
     working_dir: /app
     entrypoint: java -Xdebug -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8000 -jar /app/app.jar
 
@@ -23,7 +23,7 @@ services:
     image: mongo:latest
     container_name: taskmandb
     ports:
-      - 27017:27017
+      - 27016:27017
     volumes:
       - mongo_taskman:/etc/mongo
       - mongo_taskman_data:/data/db
