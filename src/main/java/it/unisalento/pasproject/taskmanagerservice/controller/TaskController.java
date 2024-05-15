@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static it.unisalento.pasproject.taskmanagerservice.security.SecurityConstants.ROLE_UTENTE;
+
 @RestController
 @RequestMapping("/api/tasks")
 public class TaskController {
@@ -51,7 +53,7 @@ public class TaskController {
      * @throws TaskNotFoundException If no tasks are found that match the provided filters.
      */
     @GetMapping(value="/find")
-    @Secured({"UTENTE"})
+    @Secured({ROLE_UTENTE})
     public TaskListDTO getByFilters(@RequestParam() String email,
                                     @RequestParam(required = false) Boolean running,
                                     @RequestParam(required = false) Boolean enabled,
@@ -103,7 +105,7 @@ public class TaskController {
      * @throws TaskNotFoundException If no tasks are found that match the provided filters.
      */
     @PostMapping(value="/find", consumes = MediaType.APPLICATION_JSON_VALUE)
-    @Secured({"UTENTE"})
+    @Secured({ROLE_UTENTE})
     public TaskListDTO getByFilters(@RequestBody TaskFindingDTO taskToFind) throws TaskNotFoundException{
         TaskListDTO taskList = new TaskListDTO();
         List<TaskDTO> list = new ArrayList<>();
@@ -145,7 +147,7 @@ public class TaskController {
      * @throws TaskNotFoundException If the task could not be created.
      */
     @PostMapping(value="/create", consumes = MediaType.APPLICATION_JSON_VALUE)
-    @Secured({"UTENTE"})
+    @Secured({ROLE_UTENTE})
     public TaskDTO createTask(@RequestBody TaskCreationDTO newTask) throws TaskNotFoundException{
 
         Task task = new Task();
@@ -183,7 +185,7 @@ public class TaskController {
      * @throws TaskNotFoundException If the task could not be updated.
      */
     @PutMapping(value="/update", consumes = MediaType.APPLICATION_JSON_VALUE)
-    @Secured({"UTENTE"})
+    @Secured({ROLE_UTENTE})
     public TaskDTO updateTask(@RequestBody TaskDTO taskToUpdate) throws TaskNotFoundException{
 
         Optional<Task> task = taskRepository.findById(taskToUpdate.getId());
@@ -217,7 +219,7 @@ public class TaskController {
     }
 
     @PutMapping(value="/enable/{id}")
-    @Secured({"UTENTE"})
+    @Secured({ROLE_UTENTE})
     public TaskDTO enableTask(@PathVariable String id) throws TaskNotFoundException{
 
         Optional<Task> task = taskRepository.findById(id);
@@ -237,7 +239,7 @@ public class TaskController {
     }
 
     @PutMapping(value="/disable/{id}")
-    @Secured({"UTENTE"})
+    @Secured({ROLE_UTENTE})
     public TaskDTO disableTask(@PathVariable String id) throws TaskNotFoundException{
 
         Optional<Task> task = taskRepository.findById(id);
@@ -257,7 +259,7 @@ public class TaskController {
     }
 
     @PutMapping(value="/run/{id}")
-    @Secured({"UTENTE"})
+    @Secured({ROLE_UTENTE})
     public TaskDTO runTask(@PathVariable String id) throws TaskNotFoundException{
 
         Optional<Task> task = taskRepository.findById(id);
@@ -277,7 +279,7 @@ public class TaskController {
     }
 
     @PutMapping(value="/stop/{id}")
-    @Secured({"UTENTE"})
+    @Secured({ROLE_UTENTE})
     public TaskDTO stopTask(@PathVariable String id) throws TaskNotFoundException{
 
         Optional<Task> task = taskRepository.findById(id);
@@ -297,7 +299,7 @@ public class TaskController {
     }
 
     @GetMapping(value="/find/all")
-    @Secured({"UTENTE"})
+    @Secured({ROLE_UTENTE})
     public TaskListDTO getAllTasks() {
         TaskListDTO taskList = new TaskListDTO();
         List<TaskDTO> list = new ArrayList<>();
