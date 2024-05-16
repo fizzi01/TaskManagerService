@@ -1,5 +1,6 @@
 package it.unisalento.pasproject.taskmanagerservice.configuration;
 
+import it.unisalento.pasproject.taskmanagerservice.security.ExceptionFilter;
 import it.unisalento.pasproject.taskmanagerservice.security.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,6 +16,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableMethodSecurity(prePostEnabled = true,securedEnabled = true)
 public class SecurityConfig {
+
     /**
      * Configures the security filter chain for the application.
      * <p>
@@ -27,11 +29,6 @@ public class SecurityConfig {
      */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("api/tasks/test").permitAll()
-                        .anyRequest().authenticated())
-                .sessionManagement((session) -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         // Configurazione CORS
         http.cors(AbstractHttpConfigurer::disable); // Disabilita CORS
@@ -39,7 +36,11 @@ public class SecurityConfig {
         // Configurazione CSRF
         http.csrf(AbstractHttpConfigurer::disable); // Disabilita CSRF
 
+        // Configurazione gestione eccezioni, adatta la gestione eccezioni al Servlet (carica prima degli altri componenti)
+        http.addFilterBefore(exceptionFilter(), UsernamePasswordAuthenticationFilter.class);
+
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+
 
         return http.build();
     }
@@ -52,6 +53,11 @@ public class SecurityConfig {
     @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter() {
         return new JwtAuthenticationFilter();
+    }
+
+    @Bean
+    public ExceptionFilter exceptionFilter() {
+        return new ExceptionFilter();
     }
 
 }

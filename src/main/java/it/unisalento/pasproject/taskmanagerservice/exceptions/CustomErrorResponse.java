@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
 
+import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 
 @Data
@@ -14,7 +15,7 @@ import java.time.OffsetDateTime;
 @Builder
 public class CustomErrorResponse {
     private String traceId;
-    private OffsetDateTime timestamp;
+    private String timestamp;
     private HttpStatus status;
     private String message;
 }
