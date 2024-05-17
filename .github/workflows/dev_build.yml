@@ -62,4 +62,4 @@ jobs:
       - name: Deploy
         run: |
           echo "Deploying service jar to server"
-          scp -o StrictHostKeyChecking=no -i ${{ secrets.SSH_KEY }} *.jar ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.SSH_PATH }}${GITHUB_REPOSITORY#$GITHUB_REPOSITORY_OWNER/}
+          scp -o StrictHostKeyChecking=no -i ${{ secrets.SSH_KEY }} *.jar ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.SSH_PATH }}TASK
