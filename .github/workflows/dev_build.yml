@@ -48,6 +48,7 @@ jobs:
   deploy:
     name: Deploy Service
     permissions: write-all
+    environment: aws
     needs: build
     runs-on: ubuntu-latest
     env:
