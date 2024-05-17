@@ -58,6 +58,7 @@ jobs:
       SSH_KEY:  ${{ secrets.SSH_KEY }}
       ENV_FILE: ${{ secrets.ENV_FILE }}
       DEPLOY:   ${{ vars.DEPLOY }}
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -81,7 +82,7 @@ jobs:
           fi
 
           echo "Deploying service jar to server"
-          
+
           artifact_name=$(ls *.jar)
           
           echo "$SSH_KEY" > key.pem
@@ -112,3 +113,4 @@ jobs:
         uses: geekyeggo/delete-artifact@v1
         with:
           name: service-jar
+
