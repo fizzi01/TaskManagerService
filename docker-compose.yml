@@ -5,6 +5,8 @@ services:
   taskman-service:
     image: openjdk:22-jdk-oracle
     container_name: taskmanimage
+    env_file:
+      - .env
     ports:
       - 8081:8080
       - 8001:8000
