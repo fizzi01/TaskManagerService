@@ -68,8 +68,14 @@ jobs:
 
       - name: Deploy
         run: |
-          if [ -z "$DEPLOY" ] || [ "$DEPLOY" != 1  ] || [ -z "$SSH_USER" ] || [ -z "$SSH_HOST" ] || [ -z "$SSH_PATH" ] || [ -z "$SSH_KEY" ] || [ ! -f "docker-compose.yml" ] || [ ! -f "*.jar" ]; then
+          
+          if  [ "$DEPLOY" != 1  ]; then
             echo "Skipping deployment due to missing requirements"
+            exit 1
+          fi
+          
+          if [ -z "$SSH_USER" ] || [ -z "$SSH_HOST" ] || [ -z "$SSH_PATH" ] || [ -z "$SSH_KEY" ]; then
+            echo "Missing required environment variables"
             exit 1
           fi
 
