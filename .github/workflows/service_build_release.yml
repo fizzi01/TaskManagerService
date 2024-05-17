@@ -188,4 +188,4 @@ jobs:
       - name: Delete artifact
         uses: geekyeggo/delete-artifact@v1
         with:
-          name: service-jar-o StrictHostKeyChecking=no -i ${{ secrets.SSH_KEY }} *.jar ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.SSH_PATH }}${GITHUB_REPOSITORY#$GITHUB_REPOSITORY_OWNER/}
+          name: service-jar
