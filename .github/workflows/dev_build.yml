@@ -1,6 +1,14 @@
 name: Dev Build
 
 on:
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Log level'
+        required: true
+        default: 'warning'
+      tags:
+        description: 'Forced build'
   push:
     branches:
       - dev
@@ -36,3 +44,22 @@ jobs:
         with:
           name: service-jar
           path: build/libs/*.jar
+
+  deploy:
+    name: Deploy Service
+    permissions: write-all
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: service-jar
+
+      - name: Deploy
+        run: |
+          echo "Deploying service jar to server"
+          scp -o StrictHostKeyChecking=no -i ${{ secrets.SSH_KEY }} *.jar ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.SSH_PATH }}${GITHUB_REPOSITORY#$GITHUB_REPOSITORY_OWNER/}
