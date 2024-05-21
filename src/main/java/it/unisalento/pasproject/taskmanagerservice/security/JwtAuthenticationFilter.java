@@ -40,6 +40,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
                 jwt = authorizationHeader.substring(7);
                 username = jwtUtilities.extractUsername(jwt);
+            }else {
+                throw new AccessDeniedException("Missing token");
             }
         } catch (Exception e) {
             throw new AccessDeniedException("Invalid token");
@@ -63,6 +65,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             } else {
                 throw new UserNotAuthorizedException("User not authorized");
             }
+        }
+
+        if ( SecurityContextHolder.getContext().getAuthentication() == null ) {
+            throw new AccessDeniedException("No authentication found");
         }
 
         chain.doFilter(request, response);

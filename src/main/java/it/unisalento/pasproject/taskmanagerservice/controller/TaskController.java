@@ -163,10 +163,19 @@ public class TaskController {
         task.setMinWorkingTime(newTask.getMinWorkingTime());
         task.setDescription(newTask.getDescription());
         task.setTaskDuration(newTask.getTaskDuration());
-        task.setEnabled(true); // Task enabled (true) with link of task's repository link
+
+        if( newTask.getEnabled() == null) {
+            task.setEnabled(false);
+        } else {
+            task.setEnabled(newTask.getEnabled());
+        }
         /*Vedere se va bene così lo script settato*/
         task.setScript(newTask.getScript());
-        task.setRunning(newTask.getRunning());
+
+
+        task.setRunning(true); // Il running è sempre True all'inizio, perchè il false implica il completamento della task
+
+
         task.setAssignedUsers(null);
 
         task = taskRepository.save(task);
