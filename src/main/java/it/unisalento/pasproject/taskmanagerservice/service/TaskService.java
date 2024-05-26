@@ -17,11 +17,14 @@ import java.util.Objects;
 @Service
 public class TaskService {
 
-    @Autowired
-    private MongoTemplate mongoTemplate;
+    private final MongoTemplate mongoTemplate;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TaskService.class);
 
+    @Autowired
+    public TaskService(MongoTemplate mongoTemplate) {
+        this.mongoTemplate = mongoTemplate;
+    }
 
     /**
      * Converts a Task domain object into a TaskDTO object.
@@ -49,7 +52,7 @@ public class TaskService {
         taskDTO.setScript(task.getScript());
         taskDTO.setDescription(task.getDescription());
         taskDTO.setRunning(task.getRunning());
-        taskDTO.setAssignedUsers(task.getAssignedUsers());
+        taskDTO.setAssignedResources(task.getAssignedResources());
         return taskDTO;
     }
 

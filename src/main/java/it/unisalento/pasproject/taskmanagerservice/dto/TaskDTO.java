@@ -89,5 +89,5 @@ public class TaskDTO {
     /**
      * The list of users assigned to the task.
      */
-    private List<String> assignedUsers;
+    private List<String> assignedResources;
 }

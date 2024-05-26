@@ -6,6 +6,7 @@ import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -100,10 +101,13 @@ public class Task {
      */
     private Boolean enabled;
 
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
+
     /**
      * The list of users assigned to the task.
      */
-    private List<String> assignedUsers;
+    private List<String> assignedResources;
 
     /**
      * Default constructor for the Task class.
@@ -126,9 +130,9 @@ public class Task {
      * @param description A brief description of the task.
      * @param script The script of code associated with the task.
      * @param running The current status of the task.
-     * @param assignedUsers The list of users assigned to the task.
+     * @param assignedResources The list of users assigned to the task.
      */
-    public Task(String id, String name, String emailUtente, String idUtente, Double maxComputingPower,Double maxCudaPower,Double minCudaPower ,Double taskDuration, Double maxEnergyConsumption, Double minComputingPower, Double minEnergyConsumption, Double minWorkingTime, String description, String script, Boolean running,Boolean enabled, List<String> assignedUsers) {
+    public Task(String id, String name, String emailUtente, String idUtente, Double maxComputingPower,Double maxCudaPower,Double minCudaPower ,Double taskDuration, Double maxEnergyConsumption, Double minComputingPower, Double minEnergyConsumption, Double minWorkingTime, String description, String script, Boolean running,Boolean enabled, List<String> assignedResources) {
         this.id = id;
         this.name = name;
         this.emailUtente = emailUtente;
@@ -145,6 +149,6 @@ public class Task {
         this.script = script;
         this.running = running;
         this.enabled = enabled;
-        this.assignedUsers = assignedUsers;
+        this.assignedResources = assignedResources;
     }
 }

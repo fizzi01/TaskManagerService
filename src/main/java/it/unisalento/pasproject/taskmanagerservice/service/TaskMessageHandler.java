@@ -4,8 +4,8 @@ import it.unisalento.pasproject.taskmanagerservice.business.io.producer.MessageP
 import it.unisalento.pasproject.taskmanagerservice.business.io.producer.MessageProducerStrategy;
 import it.unisalento.pasproject.taskmanagerservice.domain.Task;
 import it.unisalento.pasproject.taskmanagerservice.dto.MessageDTO;
-import it.unisalento.pasproject.taskmanagerservice.dto.TaskMessageAssignDTO;
 import it.unisalento.pasproject.taskmanagerservice.dto.TaskMessageDTO;
+import it.unisalento.pasproject.taskmanagerservice.dto.TaskStatusMessageDTO;
 import it.unisalento.pasproject.taskmanagerservice.repositories.TaskRepository;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,13 +46,13 @@ public class TaskMessageHandler {
         messageProducer.sendMessage(message, newTaskTopic, dataExchange);
     }
 
-
     /**
      * Riceve un messaggio di tipo TaskMessageAssignDTO e aggiorna i membri assegnati alla task.
      * */
     @RabbitListener(queues = "${rabbitmq.queue.taskassignment.name}")
-    public MessageDTO receiveTaskAssignmentMessage(TaskMessageAssignDTO message){
-        Optional<Task> task = taskRepository.findById(message.getIdTask());
+    public MessageDTO receiveTaskAssignmentMessage(TaskStatusMessageDTO message){
+        //TODO: DA VEDERE SE VA BENE COSI'
+        Optional<Task> task = taskRepository.findById(message.getId());
 
         if(task.isEmpty()) {
             return new MessageDTO("Task not found", 404);
@@ -60,7 +60,9 @@ public class TaskMessageHandler {
 
         Task retTask = task.get();
 
-        Optional.ofNullable(message.getAssignedUsers()).ifPresent(retTask::setAssignedUsers);
+        Optional.ofNullable(message.getAssignedResources()).ifPresent(retTask::setAssignedResources);
+        Optional.ofNullable(message.getStartTime()).ifPresent(retTask::setStartTime);
+
         taskRepository.save(retTask);
         return new MessageDTO("Task updated", 200);
     }
@@ -69,7 +71,8 @@ public class TaskMessageHandler {
      * Riceve un messaggio di tipo TaskMessageDTO e aggiorna lo stato della task.
      * */
     @RabbitListener(queues = "${rabbitmq.queue.taskexecution.name}")
-    public MessageDTO receiveTaskExecutionMessage(TaskMessageDTO message){
+    public MessageDTO receiveTaskExecutionMessage(TaskStatusMessageDTO message){
+        //TODO: DA VEDERE SE VA BENE COSI'
         Optional<Task> task = taskRepository.findById(message.getId());
 
         if(task.isEmpty()) {
@@ -79,6 +82,7 @@ public class TaskMessageHandler {
         Task retTask = task.get();
 
         Optional.ofNullable(message.getRunning()).ifPresent(retTask::setRunning);
+        Optional.ofNullable(message.getEndTime()).ifPresent(retTask::setEndTime);
 
         taskRepository.save(retTask);
         return new MessageDTO("Task updated", 200);

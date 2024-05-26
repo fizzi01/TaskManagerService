@@ -151,32 +151,28 @@ public class TaskController {
     public TaskDTO createTask(@RequestBody TaskCreationDTO newTask) throws TaskNotFoundException{
 
         Task task = new Task();
-        task.setName(newTask.getName());
-        task.setEmailUtente(newTask.getEmailUtente());
-        task.setMaxComputingPower(newTask.getMaxComputingPower());
-        task.setTaskDuration(newTask.getTaskDuration());
-        task.setMaxEnergyConsumption(newTask.getMaxEnergyConsumption());
-        task.setMaxCudaPower(newTask.getMaxCudaPower());
-        task.setMinCudaPower(newTask.getMinCudaPower());
-        task.setMinComputingPower(newTask.getMinComputingPower());
-        task.setMinEnergyConsumption(newTask.getMinEnergyConsumption());
-        task.setMinWorkingTime(newTask.getMinWorkingTime());
-        task.setDescription(newTask.getDescription());
-        task.setTaskDuration(newTask.getTaskDuration());
+        Optional.ofNullable(newTask.getName()).ifPresent(task::setName);
+        Optional.ofNullable(newTask.getEmailUtente()).ifPresent(task::setEmailUtente);
+        Optional.ofNullable(newTask.getTaskDuration()).ifPresent(task::setTaskDuration);
+        Optional.ofNullable(newTask.getMaxComputingPower()).ifPresent(task::setMaxComputingPower);
+        Optional.ofNullable(newTask.getMaxEnergyConsumption()).ifPresent(task::setMaxEnergyConsumption);
+        Optional.ofNullable(newTask.getMaxCudaPower()).ifPresent(task::setMaxCudaPower);
+        Optional.ofNullable(newTask.getMinCudaPower()).ifPresent(task::setMinCudaPower);
+        Optional.ofNullable(newTask.getMinComputingPower()).ifPresent(task::setMinComputingPower);
+        Optional.ofNullable(newTask.getMinEnergyConsumption()).ifPresent(task::setMinEnergyConsumption);
+        Optional.ofNullable(newTask.getMinWorkingTime()).ifPresent(task::setMinWorkingTime);
+        Optional.ofNullable(newTask.getDescription()).ifPresent(task::setDescription);
+        Optional.ofNullable(newTask.getScript()).ifPresent(task::setScript);
 
         if( newTask.getEnabled() == null) {
             task.setEnabled(false);
         } else {
             task.setEnabled(newTask.getEnabled());
         }
-        /*Vedere se va bene così lo script settato*/
-        task.setScript(newTask.getScript());
-
 
         task.setRunning(true); // Il running è sempre True all'inizio, perchè il false implica il completamento della task
 
-
-        task.setAssignedUsers(null);
+        task.setAssignedResources(null);
 
         task = taskRepository.save(task);
 
@@ -217,7 +213,7 @@ public class TaskController {
         Optional.ofNullable(taskToUpdate.getDescription()).ifPresent(retTask::setDescription);
         Optional.ofNullable(taskToUpdate.getScript()).ifPresent(retTask::setScript);
         Optional.ofNullable(taskToUpdate.getRunning()).ifPresent(retTask::setRunning);
-        Optional.ofNullable(taskToUpdate.getAssignedUsers()).ifPresent(retTask::setAssignedUsers);
+        Optional.ofNullable(taskToUpdate.getAssignedResources()).ifPresent(retTask::setAssignedResources);
 
         retTask = taskRepository.save(retTask);
 
