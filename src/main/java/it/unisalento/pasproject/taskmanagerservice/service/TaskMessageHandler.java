@@ -55,7 +55,7 @@ public class TaskMessageHandler {
         Optional<Task> task = taskRepository.findById(message.getId());
 
         if(task.isEmpty()) {
-            throw new RuntimeException("Task not found");
+            return;
         }
 
         Task retTask = task.get();
@@ -75,7 +75,7 @@ public class TaskMessageHandler {
         Optional<Task> task = taskRepository.findById(message.getId());
 
         if(task.isEmpty()) {
-            throw new RuntimeException("Task not found");
+            return;
         }
 
         Task retTask = task.get();
