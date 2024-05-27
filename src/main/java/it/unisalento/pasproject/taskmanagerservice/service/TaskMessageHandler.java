@@ -51,19 +51,23 @@ public class TaskMessageHandler {
      * */
     @RabbitListener(queues = "${rabbitmq.queue.taskassignment.name}")
     public void receiveTaskAssignmentMessage(TaskStatusMessageDTO message){
-        //TODO: DA VEDERE SE VA BENE COSI'
-        Optional<Task> task = taskRepository.findById(message.getId());
 
-        if(task.isEmpty()) {
+        try {
+            Optional<Task> task = taskRepository.findById(message.getId());
+
+            if (task.isEmpty()) {
+                return;
+            }
+
+            Task retTask = task.get();
+
+            Optional.ofNullable(message.getAssignedResources()).ifPresent(retTask::setAssignedResources);
+            Optional.ofNullable(message.getStartTime()).ifPresent(retTask::setStartTime);
+
+            taskRepository.save(retTask);
+        } catch (Exception e) {
             return;
         }
-
-        Task retTask = task.get();
-
-        Optional.ofNullable(message.getAssignedResources()).ifPresent(retTask::setAssignedResources);
-        Optional.ofNullable(message.getStartTime()).ifPresent(retTask::setStartTime);
-
-        taskRepository.save(retTask);
     }
 
     /**
@@ -71,18 +75,23 @@ public class TaskMessageHandler {
      * */
     @RabbitListener(queues = "${rabbitmq.queue.taskexecution.name}")
     public void receiveTaskExecutionMessage(TaskStatusMessageDTO message){
-        //TODO: DA VEDERE SE VA BENE COSI'
-        Optional<Task> task = taskRepository.findById(message.getId());
 
-        if(task.isEmpty()) {
+        try {
+            Optional<Task> task = taskRepository.findById(message.getId());
+
+            if (task.isEmpty()) {
+                return;
+            }
+
+            Task retTask = task.get();
+
+            Optional.ofNullable(message.getRunning()).ifPresent(retTask::setRunning);
+            Optional.ofNullable(message.getEndTime()).ifPresent(retTask::setEndTime);
+
+            taskRepository.save(retTask);
+        } catch (Exception e) {
+            //TODO: MessageDTO
             return;
         }
-
-        Task retTask = task.get();
-
-        Optional.ofNullable(message.getRunning()).ifPresent(retTask::setRunning);
-        Optional.ofNullable(message.getEndTime()).ifPresent(retTask::setEndTime);
-
-        taskRepository.save(retTask);
     }
 }
