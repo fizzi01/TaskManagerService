@@ -50,12 +50,12 @@ public class TaskMessageHandler {
      * Riceve un messaggio di tipo TaskMessageAssignDTO e aggiorna i membri assegnati alla task.
      * */
     @RabbitListener(queues = "${rabbitmq.queue.taskassignment.name}")
-    public MessageDTO receiveTaskAssignmentMessage(TaskStatusMessageDTO message){
+    public void receiveTaskAssignmentMessage(TaskStatusMessageDTO message){
         //TODO: DA VEDERE SE VA BENE COSI'
         Optional<Task> task = taskRepository.findById(message.getId());
 
         if(task.isEmpty()) {
-            return new MessageDTO("Task not found", 404);
+            throw new RuntimeException("Task not found");
         }
 
         Task retTask = task.get();
@@ -64,19 +64,18 @@ public class TaskMessageHandler {
         Optional.ofNullable(message.getStartTime()).ifPresent(retTask::setStartTime);
 
         taskRepository.save(retTask);
-        return new MessageDTO("Task updated", 200);
     }
 
     /**
      * Riceve un messaggio di tipo TaskMessageDTO e aggiorna lo stato della task.
      * */
     @RabbitListener(queues = "${rabbitmq.queue.taskexecution.name}")
-    public MessageDTO receiveTaskExecutionMessage(TaskStatusMessageDTO message){
+    public void receiveTaskExecutionMessage(TaskStatusMessageDTO message){
         //TODO: DA VEDERE SE VA BENE COSI'
         Optional<Task> task = taskRepository.findById(message.getId());
 
         if(task.isEmpty()) {
-            return new MessageDTO("Task not found", 404);
+            throw new RuntimeException("Task not found");
         }
 
         Task retTask = task.get();
@@ -85,6 +84,5 @@ public class TaskMessageHandler {
         Optional.ofNullable(message.getEndTime()).ifPresent(retTask::setEndTime);
 
         taskRepository.save(retTask);
-        return new MessageDTO("Task updated", 200);
     }
 }
