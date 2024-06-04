@@ -10,6 +10,7 @@ import it.unisalento.pasproject.taskmanagerservice.repositories.TaskRepository;
 import it.unisalento.pasproject.taskmanagerservice.service.TaskMessageHandler;
 import it.unisalento.pasproject.taskmanagerservice.service.TaskService;
 
+import it.unisalento.pasproject.taskmanagerservice.service.UserCheckService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.annotation.Secured;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static it.unisalento.pasproject.taskmanagerservice.security.SecurityConstants.ROLE_ADMIN;
 import static it.unisalento.pasproject.taskmanagerservice.security.SecurityConstants.ROLE_UTENTE;
 
 @RestController
@@ -28,14 +30,19 @@ public class TaskController {
     /**
      * TaskRepository instance for accessing the task data.
      */
-    @Autowired
-    TaskRepository taskRepository;
+    private final TaskRepository taskRepository;
+    private final  TaskService taskService;
+    private final TaskMessageHandler taskMessageHandler;
+
+    private final UserCheckService userCheckService;
 
     @Autowired
-    private TaskService taskService;
-
-    @Autowired
-    private TaskMessageHandler taskMessageHandler;
+    public TaskController(UserCheckService userCheckService, TaskRepository taskRepository, TaskService taskService, TaskMessageHandler taskMessageHandler) {
+        this.userCheckService = userCheckService;
+        this.taskRepository = taskRepository;
+        this.taskService = taskService;
+        this.taskMessageHandler = taskMessageHandler;
+    }
 
 
     /**
@@ -152,15 +159,25 @@ public class TaskController {
 
         Task task = new Task();
         Optional.ofNullable(newTask.getName()).ifPresent(task::setName);
-        Optional.ofNullable(newTask.getEmailUtente()).ifPresent(task::setEmailUtente);
-        Optional.ofNullable(newTask.getTaskDuration()).ifPresent(task::setTaskDuration);
-        Optional.ofNullable(newTask.getMaxComputingPower()).ifPresent(task::setMaxComputingPower);
-        Optional.ofNullable(newTask.getMaxEnergyConsumption()).ifPresent(task::setMaxEnergyConsumption);
-        Optional.ofNullable(newTask.getMaxCudaPower()).ifPresent(task::setMaxCudaPower);
-        Optional.ofNullable(newTask.getMinCudaPower()).ifPresent(task::setMinCudaPower);
-        Optional.ofNullable(newTask.getMinComputingPower()).ifPresent(task::setMinComputingPower);
-        Optional.ofNullable(newTask.getMinEnergyConsumption()).ifPresent(task::setMinEnergyConsumption);
-        Optional.ofNullable(newTask.getMinWorkingTime()).ifPresent(task::setMinWorkingTime);
+
+        if (newTask.getEmailUtente() == null) {
+            task.setEmailUtente(userCheckService.getCurrentUserEmail());
+        }else {
+            Optional.of(newTask.getEmailUtente()).ifPresent(task::setEmailUtente);
+        }
+
+        if(!userCheckService.isCorrectUser(task.getEmailUtente())){
+            throw new TaskNotFoundException("You can't create a task for another user");
+        }
+
+        Optional.of(newTask.getTaskDuration()).ifPresent(task::setTaskDuration);
+        Optional.of(newTask.getMaxComputingPower()).ifPresent(task::setMaxComputingPower);
+        Optional.of(newTask.getMaxEnergyConsumption()).ifPresent(task::setMaxEnergyConsumption);
+        Optional.of(newTask.getMaxCudaPower()).ifPresent(task::setMaxCudaPower);
+        Optional.of(newTask.getMinCudaPower()).ifPresent(task::setMinCudaPower);
+        Optional.of(newTask.getMinComputingPower()).ifPresent(task::setMinComputingPower);
+        Optional.of(newTask.getMinEnergyConsumption()).ifPresent(task::setMinEnergyConsumption);
+        Optional.of(newTask.getMinWorkingTime()).ifPresent(task::setMinWorkingTime);
         Optional.ofNullable(newTask.getDescription()).ifPresent(task::setDescription);
         Optional.ofNullable(newTask.getScript()).ifPresent(task::setScript);
 
@@ -201,6 +218,10 @@ public class TaskController {
 
         Task retTask = task.get();
 
+        if(!userCheckService.isCorrectUser(retTask.getEmailUtente())){
+            throw new TaskNotFoundException("You can't update a task for another user");
+        }
+
         // Utilizza Optional per verificare se un valore è presente o meno
         Optional.of(taskToUpdate.getName()).ifPresent(retTask::setName);
         Optional.of(taskToUpdate.getEmailUtente()).ifPresent(retTask::setEmailUtente);
@@ -234,6 +255,11 @@ public class TaskController {
         }
 
         Task retTask = task.get();
+
+        if(!userCheckService.isCorrectUser(retTask.getEmailUtente())){
+            throw new TaskNotFoundException("You can't update a task for another user");
+        }
+
         retTask.setEnabled(true);
         retTask = taskRepository.save(retTask);
 
@@ -254,6 +280,11 @@ public class TaskController {
         }
 
         Task retTask = task.get();
+
+        if(!userCheckService.isCorrectUser(retTask.getEmailUtente())){
+            throw new TaskNotFoundException("You can't update a task for another user");
+        }
+
         retTask.setEnabled(false);
         retTask = taskRepository.save(retTask);
 
@@ -274,6 +305,11 @@ public class TaskController {
         }
 
         Task retTask = task.get();
+
+        if(!userCheckService.isCorrectUser(retTask.getEmailUtente())){
+            throw new TaskNotFoundException("You can't update a task for another user");
+        }
+
         retTask.setRunning(true);
         retTask = taskRepository.save(retTask);
 
@@ -294,6 +330,11 @@ public class TaskController {
         }
 
         Task retTask = task.get();
+
+        if(!userCheckService.isCorrectUser(retTask.getEmailUtente())){
+            throw new TaskNotFoundException("You can't update a task for another user");
+        }
+
         retTask.setRunning(false);
         retTask = taskRepository.save(retTask);
 
@@ -304,7 +345,7 @@ public class TaskController {
     }
 
     @GetMapping(value="/find/all")
-    @Secured({ROLE_UTENTE})
+    @Secured({ROLE_UTENTE, ROLE_ADMIN})
     public TaskListDTO getAllTasks() {
         TaskListDTO taskList = new TaskListDTO();
         List<TaskDTO> list = new ArrayList<>();
