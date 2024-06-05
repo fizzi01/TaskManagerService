@@ -33,7 +33,6 @@ services:
 
 networks:
   greenspot-net:
-    name: greenspot_net
 
 volumes:
     mongo_taskman:
