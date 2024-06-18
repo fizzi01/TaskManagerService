@@ -16,6 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -315,8 +316,11 @@ public class TaskController {
             throw new TaskNotFoundException("You can't update a task for another user");
         }
 
-        retTask.setRunning(true);
-        retTask = taskRepository.save(retTask);
+        if(retTask.getEndTime() != null) {
+            retTask.setRunning(true);
+            retTask.setEnabled(true);
+            retTask = taskRepository.save(retTask);
+        }
 
         //Send Messages to other services
         taskMessageHandler.sendUpdateTaskMessage(taskService.getTaskMessageDTO(retTask));
@@ -340,11 +344,16 @@ public class TaskController {
             throw new TaskNotFoundException("You can't update a task for another user");
         }
 
-        retTask.setRunning(false);
-        retTask = taskRepository.save(retTask);
+        if (Boolean.TRUE.equals(retTask.getEnabled()) && retTask.getEndTime() == null){
+            retTask.setRunning(false);
+            retTask.setEnabled(false);
+            retTask.setEndTime(LocalDateTime.now());
+            retTask = taskRepository.save(retTask);
 
-        //Send Messages to other services
-        taskMessageHandler.sendUpdateTaskMessage(taskService.getTaskMessageDTO(retTask));
+            //Send Messages to other services
+            taskMessageHandler.sendUpdateTaskMessage(taskService.getTaskMessageDTO(retTask));
+        }
+
 
         return taskService.getTaskDTO(retTask);
     }
