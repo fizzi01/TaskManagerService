@@ -11,6 +11,7 @@ import java.util.List;
 public class TaskStatusMessageDTO {
     private String id;
     private Boolean running;
+    private Boolean enabled;
     private List<String> assignedResources;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
