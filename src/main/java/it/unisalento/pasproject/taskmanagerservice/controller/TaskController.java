@@ -73,6 +73,10 @@ public class TaskController {
                                     @RequestParam(required = false) Double minEnergyConsumption,
                                     @RequestParam(required = false) Double taskDuration) throws TaskNotFoundException{
 
+        if(!userCheckService.isCorrectUser(email)){
+            throw new TaskNotFoundException("Wrong user!");
+        }
+
         TaskListDTO taskList = new TaskListDTO();
         List<TaskDTO> list = new ArrayList<>();
         taskList.setTasks(list);
@@ -114,6 +118,13 @@ public class TaskController {
     @PostMapping(value="/find", consumes = MediaType.APPLICATION_JSON_VALUE)
     @Secured({ROLE_UTENTE})
     public TaskListDTO getByFilters(@RequestBody TaskFindingDTO taskToFind) throws TaskNotFoundException{
+
+        if(!userCheckService.isCorrectUser(taskToFind.getEmailUtente()) && taskToFind.getEmailUtente() != null){
+            throw new TaskNotFoundException("Wrong user!");
+        } else { //Fallback to current user
+            taskToFind.setEmailUtente(userCheckService.getCurrentUserEmail());
+        }
+
         TaskListDTO taskList = new TaskListDTO();
         List<TaskDTO> list = new ArrayList<>();
         taskList.setTasks(list);
@@ -218,7 +229,9 @@ public class TaskController {
 
         Task retTask = task.get();
 
-        if(!userCheckService.isCorrectUser(retTask.getEmailUtente())){
+        //Se email utente missing, don't need to check that
+        if(!userCheckService.isCorrectUser(retTask.getEmailUtente())
+                && Optional.ofNullable(taskToUpdate.getEmailUtente()).isPresent()){
             throw new TaskNotFoundException("You can't update a task for another user");
         }
 
@@ -345,7 +358,7 @@ public class TaskController {
     }
 
     @GetMapping(value="/find/all")
-    @Secured({ROLE_UTENTE, ROLE_ADMIN})
+    @Secured({ROLE_ADMIN})
     public TaskListDTO getAllTasks() {
         TaskListDTO taskList = new TaskListDTO();
         List<TaskDTO> list = new ArrayList<>();
