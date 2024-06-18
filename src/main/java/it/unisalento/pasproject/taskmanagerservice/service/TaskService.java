@@ -108,25 +108,25 @@ public class TaskService {
         if (name != null) {
             query.addCriteria(Criteria.where("name").is(name));
         }
-        if (maxComputingPower != null) {
+        if (maxComputingPower != null && maxComputingPower > 0.0) {
             query.addCriteria(Criteria.where("maxComputingPower").lte(maxComputingPower));
         }
-        if (maxCudaPower != null) {
+        if (maxCudaPower != null && maxCudaPower > 0.0) {
             query.addCriteria(Criteria.where("maxCudaPower").lte(maxCudaPower));
         }
-        if (minCudaPower != null) {
+        if (minCudaPower != null && minCudaPower > 0.0) {
             query.addCriteria(Criteria.where("minCudaPower").gte(minCudaPower));
         }
-        if (minComputingPower != null) {
+        if (minComputingPower != null && minComputingPower > 0.0) {
             query.addCriteria(Criteria.where("minComputingPower").gte(minComputingPower));
         }
-        if (maxEnergyConsumption != null) {
+        if (maxEnergyConsumption != null && maxEnergyConsumption > 0.0) {
             query.addCriteria(Criteria.where("maxEnergyConsumption").lte(maxEnergyConsumption));
         }
-        if (minEnergyConsumption != null) {
+        if (minEnergyConsumption != null && minEnergyConsumption > 0.0) {
             query.addCriteria(Criteria.where("minEnergyConsumption").gte(minEnergyConsumption));
         }
-        if (taskDuration != null) {
+        if (taskDuration != null && taskDuration > 0.0) {
             query.addCriteria(Criteria.where("taskDuration").gte(taskDuration));
         }
 

@@ -115,7 +115,7 @@ public class TaskController {
     @Secured({ROLE_UTENTE})
     public TaskListDTO getByFilters(@RequestBody TaskFindingDTO taskToFind) throws TaskNotFoundException{
 
-        if(!userCheckService.isCorrectUser(taskToFind.getEmailUtente()) && taskToFind.getEmailUtente() != null){
+        if(taskToFind.getEmailUtente() != null && !userCheckService.isCorrectUser(taskToFind.getEmailUtente())){
             throw new TaskNotFoundException("Wrong user!");
         } else { //Fallback to current user
             taskToFind.setEmailUtente(userCheckService.getCurrentUserEmail());
