@@ -82,6 +82,7 @@ public class TaskMessageHandler {
     public void receiveTaskExecutionMessage(TaskStatusMessageDTO message){
 
         try {
+            LOGGER.info("Received task execution message: {}", message);
             Optional<Task> task = taskRepository.findById(message.getId());
 
             if (task.isEmpty()) {
