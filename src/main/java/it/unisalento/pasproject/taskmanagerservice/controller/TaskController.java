@@ -95,10 +95,6 @@ public class TaskController {
                 taskDuration
         );
 
-        if(tasks.isEmpty()) {
-            throw new TaskNotFoundException("No tasks found with the provided filters.");
-        }
-
         for (Task task : tasks){
             TaskDTO taskDTO = taskService.getTaskDTO(task);
 
@@ -143,10 +139,6 @@ public class TaskController {
                 taskToFind.getTaskDuration()
         );
 
-
-        if(tasks.isEmpty()) {
-            throw new TaskNotFoundException("No tasks found with the provided filters.");
-        }
 
         for (Task task : tasks){
             TaskDTO taskDTO = taskService.getTaskDTO(task);
