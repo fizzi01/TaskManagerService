@@ -88,6 +88,11 @@ public class TaskDTO {
     private Boolean running;
 
     /**
+     * The enabled status of the task.
+     */
+    private Boolean enabled;
+
+    /**
      * The list of users assigned to the task.
      */
     private List<String> assignedResources;

@@ -55,6 +55,7 @@ public class TaskService {
         taskDTO.setAssignedResources(task.getAssignedResources());
         taskDTO.setStartTime(task.getStartTime());
         taskDTO.setEndTime(task.getEndTime());
+        taskDTO.setEnabled(task.getEnabled());
 
         return taskDTO;
     }
