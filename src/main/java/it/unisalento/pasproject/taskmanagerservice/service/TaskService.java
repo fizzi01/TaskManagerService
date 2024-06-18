@@ -98,7 +98,9 @@ public class TaskService {
         query.addCriteria(Criteria.where("emailUtente").is(email));
 
         // If enabled is not provided, only return enabled tasks
-        query.addCriteria(Criteria.where("enabled").is(Objects.requireNonNullElse(enabled, true)));
+        if (enabled != null) {
+            query.addCriteria(Criteria.where("enabled").is(enabled));
+        }
 
         // Add conditions based on parameters provided
         if (running != null) {
