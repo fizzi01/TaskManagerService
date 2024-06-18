@@ -222,20 +222,20 @@ public class TaskController {
         Task retTask = task.get();
 
         //Se email utente missing, don't need to check that
-        if(!userCheckService.isCorrectUser(retTask.getEmailUtente())
-                && Optional.ofNullable(taskToUpdate.getEmailUtente()).isPresent()){
+        if(!userCheckService.isCorrectUser(retTask.getEmailUtente())){
             throw new TaskNotFoundException("You can't update a task for another user");
         }
 
         // Utilizza Optional per verificare se un valore è presente o meno
         Optional.of(taskToUpdate.getName()).ifPresent(retTask::setName);
-        Optional.of(taskToUpdate.getEmailUtente()).ifPresent(retTask::setEmailUtente);
         Optional.of(taskToUpdate.getMaxComputingPower()).ifPresent(retTask::setMaxComputingPower);
         Optional.of(taskToUpdate.getTaskDuration()).ifPresent(retTask::setTaskDuration);
         Optional.of(taskToUpdate.getMaxEnergyConsumption()).ifPresent(retTask::setMaxEnergyConsumption);
         Optional.of(taskToUpdate.getMinComputingPower()).ifPresent(retTask::setMinComputingPower);
         Optional.of(taskToUpdate.getMinEnergyConsumption()).ifPresent(retTask::setMinEnergyConsumption);
         Optional.of(taskToUpdate.getMinWorkingTime()).ifPresent(retTask::setMinWorkingTime);
+        Optional.of(taskToUpdate.getMaxCudaPower()).ifPresent(retTask::setMaxCudaPower);
+        Optional.of(taskToUpdate.getMinCudaPower()).ifPresent(retTask::setMinCudaPower);
         Optional.ofNullable(taskToUpdate.getDescription()).ifPresent(retTask::setDescription);
         Optional.ofNullable(taskToUpdate.getScript()).ifPresent(retTask::setScript);
         Optional.ofNullable(taskToUpdate.getRunning()).ifPresent(retTask::setRunning);
