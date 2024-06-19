@@ -66,6 +66,9 @@ public class TaskMessageHandler {
 
             Task retTask = task.get();
 
+            Optional.ofNullable(message.getEnabled()).ifPresent(retTask::setEnabled);
+            Optional.ofNullable(message.getRunning()).ifPresent(retTask::setRunning);
+            Optional.ofNullable(message.getEndTime()).ifPresent(retTask::setEndTime);
             Optional.ofNullable(message.getAssignedResources()).ifPresent(retTask::setAssignedResources);
             Optional.ofNullable(message.getStartTime()).ifPresent(retTask::setStartTime);
 
