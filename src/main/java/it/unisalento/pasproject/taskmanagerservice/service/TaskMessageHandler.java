@@ -42,7 +42,7 @@ public class TaskMessageHandler {
     @Value("${rabbitmq.exchange.data.name}")
     private String dataExchange;
 
-    //TODO: Ricevere messaggio di risposta (message exchange) ????
+
     public void sendNewTaskMessage(TaskMessageDTO message) {
         messageProducer.sendMessage(message, newTaskTopic, dataExchange);
     }

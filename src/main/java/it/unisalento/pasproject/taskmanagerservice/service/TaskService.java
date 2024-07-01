@@ -74,6 +74,7 @@ public class TaskService {
         taskMessageDTO.setMinWorkingTime(task.getMinWorkingTime());
         taskMessageDTO.setRunning(task.getRunning());
         taskMessageDTO.setEnabled(task.getEnabled());
+        taskMessageDTO.setScript(task.getScript());
         return taskMessageDTO;
     }
 
