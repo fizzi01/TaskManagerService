@@ -101,7 +101,19 @@ public class Task {
      */
     private Boolean enabled;
 
+    /**
+     * The time the task was created.
+     */
+    private LocalDateTime createdTime;
+
+    /**
+     * The start time of the task.
+     */
     private LocalDateTime startTime;
+
+    /**
+     * The end time of the task.
+     */
     private LocalDateTime endTime;
 
     /**
@@ -114,10 +126,10 @@ public class Task {
      */
     public Task() {}
 
-    /**
-     * Constructor for the Task class with all fields.
-     *
-     * @param id The unique identifier of the task.
+    /*
+      Constructor for the Task class with all fields.
+
+      @param id The unique identifier of the task.
      * @param name The name of the task.
      * @param emailUtente The email of the user who created the task.
      * @param idUtente The id of the user who created the task.
@@ -132,23 +144,4 @@ public class Task {
      * @param running The current status of the task.
      * @param assignedResources The list of users assigned to the task.
      */
-    public Task(String id, String name, String emailUtente, String idUtente, Double maxComputingPower,Double maxCudaPower,Double minCudaPower ,Double taskDuration, Double maxEnergyConsumption, Double minComputingPower, Double minEnergyConsumption, Double minWorkingTime, String description, String script, Boolean running,Boolean enabled, List<String> assignedResources) {
-        this.id = id;
-        this.name = name;
-        this.emailUtente = emailUtente;
-        this.idUtente = idUtente;
-        this.maxComputingPower = maxComputingPower;
-        this.maxCudaPower = maxCudaPower;
-        this.minCudaPower = minCudaPower;
-        this.taskDuration = taskDuration;
-        this.maxEnergyConsumption = maxEnergyConsumption;
-        this.minComputingPower = minComputingPower;
-        this.minEnergyConsumption = minEnergyConsumption;
-        this.minWorkingTime = minWorkingTime;
-        this.description = description;
-        this.script = script;
-        this.running = running;
-        this.enabled = enabled;
-        this.assignedResources = assignedResources;
-    }
 }

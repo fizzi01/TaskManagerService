@@ -97,6 +97,7 @@ public class TaskDTO {
      */
     private List<String> assignedResources;
 
+    private LocalDateTime createdTime;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
 }

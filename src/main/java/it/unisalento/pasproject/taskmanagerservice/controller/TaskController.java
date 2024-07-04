@@ -194,6 +194,7 @@ public class TaskController {
         task.setRunning(true); // Il running è sempre True all'inizio, perchè il false implica il completamento della task
 
         task.setAssignedResources(null);
+        task.setCreatedTime(LocalDateTime.now());
 
         task = taskRepository.save(task);
 
