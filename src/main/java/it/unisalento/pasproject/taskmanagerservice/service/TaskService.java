@@ -1,6 +1,7 @@
 package it.unisalento.pasproject.taskmanagerservice.service;
 
 import it.unisalento.pasproject.taskmanagerservice.domain.Task;
+import it.unisalento.pasproject.taskmanagerservice.dto.TaskCreationDTO;
 import it.unisalento.pasproject.taskmanagerservice.dto.TaskDTO;
 import it.unisalento.pasproject.taskmanagerservice.dto.TaskMessageDTO;
 import org.slf4j.Logger;
@@ -59,6 +60,26 @@ public class TaskService {
         taskDTO.setEnabled(task.getEnabled());
 
         return taskDTO;
+    }
+
+    public Task getFromDTO(TaskCreationDTO taskCreationDTO){
+        Task task = new Task();
+        task.setName(taskCreationDTO.getName());
+        task.setEmailUtente(taskCreationDTO.getEmailUtente());
+        task.setMaxComputingPower(taskCreationDTO.getMaxComputingPower());
+        task.setMaxCudaPower(taskCreationDTO.getMaxCudaPower());
+        task.setMinCudaPower(taskCreationDTO.getMinCudaPower());
+        task.setTaskDuration(taskCreationDTO.getTaskDuration());
+        task.setMaxEnergyConsumption(taskCreationDTO.getMaxEnergyConsumption());
+        task.setMinComputingPower(taskCreationDTO.getMinComputingPower());
+        task.setMinEnergyConsumption(taskCreationDTO.getMinEnergyConsumption());
+        task.setMinWorkingTime(taskCreationDTO.getMinWorkingTime());
+        task.setScript(taskCreationDTO.getScript());
+        task.setDescription(taskCreationDTO.getDescription());
+        task.setRunning(taskCreationDTO.getRunning());
+        task.setEnabled(taskCreationDTO.getEnabled());
+        return task;
+
     }
 
     public TaskMessageDTO getTaskMessageDTO(Task task){
